@@ -3,6 +3,7 @@ package frontend;
 import backend.CanvasState;
 import backend.model.Figure;
 import backend.model.*;
+import frontend.interfaces.Drawable;
 import frontend.model.DrawableCircle;
 import frontend.model.DrawableEllipse;
 import frontend.model.DrawableRectangle;
@@ -33,7 +34,7 @@ public class PaintPane extends BorderPane {
 	private final ToggleButton circleButton = new ToggleButton("Círculo");
 	private final ToggleButton squareButton = new ToggleButton("Cuadrado");
 	private final ToggleButton ellipseButton = new ToggleButton("Elipse");
-	private ToggleButton deleteButton = new ToggleButton("Borrar");
+	private final ToggleButton deleteButton = new ToggleButton("Borrar");
 
 	ToggleButton copyButton = new ToggleButton("Cop. Form.");
 
@@ -105,7 +106,8 @@ public class PaintPane extends BorderPane {
 				double sMayorAxis = Math.abs(endPoint.getX() - startPoint.getX());
 				double sMinorAxis = Math.abs(endPoint.getY() - startPoint.getY());
 				newFigure = new DrawableEllipse(centerPoint, sMayorAxis, sMinorAxis, gc);
-			}
+			} else
+				return;
 			canvasState.addFigure(newFigure);
 			startPoint = null;
 			redrawCanvas();
