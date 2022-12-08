@@ -11,12 +11,10 @@ import javafx.geometry.Insets;
 import javafx.scene.Cursor;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.ToggleButton;
-import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.control.Slider;
 
 public class PaintPane extends BorderPane {
 
@@ -37,6 +35,15 @@ public class PaintPane extends BorderPane {
 	private final ToggleButton ellipseButton = new ToggleButton("Elipse");
 	private ToggleButton deleteButton = new ToggleButton("Borrar");
 
+	ToggleButton copyButton = new ToggleButton("Cop. Form.");
+
+	Label lineLbl = new Label("Borde");
+	Slider lineSlider = new Slider(1, 50, 5);
+	ColorPicker lineColorPicker = new ColorPicker();
+
+	Label fillLbl = new Label("Relleno");
+	ColorPicker fillColorPicker = new ColorPicker();
+
 	// Dibujar una figura
 	private Point startPoint;
 
@@ -49,15 +56,23 @@ public class PaintPane extends BorderPane {
 	public PaintPane(CanvasState canvasState, StatusPane statusPane) {
 		this.canvasState = canvasState;
 		this.statusPane = statusPane;
-		ToggleButton[] toolsArr = {selectionButton, rectangleButton, circleButton, squareButton, ellipseButton, deleteButton};
+		ToggleButton[] toolsArr = {selectionButton, rectangleButton, circleButton, squareButton, ellipseButton, deleteButton, copyButton};
 		ToggleGroup tools = new ToggleGroup();
 		for (ToggleButton tool : toolsArr) {
 			tool.setMinWidth(90);
 			tool.setToggleGroup(tools);
-			tool.setCursor(Cursor.HAND);
+			setCursor(tool);
 		}
+
+		lineSlider.setShowTickMarks(true);
+		lineSlider.setShowTickLabels(true);
+		setCursor(lineSlider);
+		setCursor(lineColorPicker);
+		setCursor(fillColorPicker);
+
 		VBox buttonsBox = new VBox(10);
 		buttonsBox.getChildren().addAll(toolsArr);
+		buttonsBox.getChildren().addAll(lineLbl, lineSlider, lineColorPicker, fillLbl, fillColorPicker);
 		buttonsBox.setPadding(new Insets(5));
 		buttonsBox.setStyle("-fx-background-color: #999");
 		buttonsBox.setPrefWidth(100);
@@ -169,5 +184,8 @@ public class PaintPane extends BorderPane {
 		}
 	}
 
+	private void setCursor(Control o) {
+		o.setCursor(Cursor.HAND);
+	}
 
 }
