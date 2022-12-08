@@ -91,7 +91,7 @@ public class PaintPane extends BorderPane {
 			if(endPoint.getX() < startPoint.getX() || endPoint.getY() < startPoint.getY()) {
 				return ;
 			}
-			Figure newFigure = null;
+			Figure newFigure;
 			if(rectangleButton.isSelected()) {
 				newFigure = new DrawableRectangle(startPoint, endPoint, gc);
 			}
