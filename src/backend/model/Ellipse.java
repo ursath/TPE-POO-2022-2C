@@ -38,4 +38,5 @@ public abstract class Ellipse extends Figure {
         return sMinorAxis;
     }
 
+
 }

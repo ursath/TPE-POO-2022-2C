@@ -207,7 +207,8 @@ public class PaintPane extends BorderPane {
 
 		copyButton.setOnAction(event -> {
 			if ( selectedFigure != null ){
-				copiedFigure = selectedFigure;
+				copiedFigure = selectedFigure.getDuplicate(new Point(400,300));
+				//canvas.
 			}
 		});
 		cutButton.setOnAction(event -> {
@@ -219,7 +220,6 @@ public class PaintPane extends BorderPane {
 
 		pasteButton.setOnAction(event -> {
 			if ( copiedFigure != null ){
-				copiedFigure.move(200,290);
 				canvasState.addFigure(copiedFigure);
 				redrawCanvas();
 			}

@@ -1,7 +1,10 @@
 package frontend.model;
 
 import backend.model.Circle;
+import backend.model.Ellipse;
+import backend.model.Figure;
 import backend.model.Point;
+import frontend.interfaces.Drawable;
 import javafx.scene.canvas.GraphicsContext;
 
 public class DrawableCircle extends Circle {
@@ -18,4 +21,10 @@ public class DrawableCircle extends Circle {
         gc.strokeOval(getCenterPoint().getX() - getRadius(), getCenterPoint().getY() - getRadius(), diameter, diameter);
     }
 
+    @Override
+    public Figure getDuplicate(Point center){
+        DrawableCircle toReturn = new DrawableCircle(center,getRadius(),gc );
+        //CPY FORMAT
+        return toReturn;
+    }
 }
