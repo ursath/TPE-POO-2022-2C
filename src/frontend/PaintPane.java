@@ -9,6 +9,8 @@ import frontend.model.DrawableCircle;
 import frontend.model.DrawableEllipse;
 import frontend.model.DrawableRectangle;
 import frontend.model.DrawableSquare;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
 import javafx.scene.Cursor;
 import javafx.scene.canvas.Canvas;
@@ -33,6 +35,10 @@ public class PaintPane extends BorderPane {
 	private final GraphicsContext gc = canvas.getGraphicsContext2D();
 	private final Color lineColor = Color.BLACK;
 	private final Color fillColor = Color.YELLOW;
+	double lineWidth = 1;
+	private Color newLineColor = null;
+	private Color newFillColor = null;
+	private double newLineWidth = 0;
 
 	// Botones Barra Izquierda
 	private final ToggleButton selectionButton = new ToggleButton("Seleccionar");
@@ -51,10 +57,10 @@ public class PaintPane extends BorderPane {
 
 	private Label lineLbl = new Label("Borde");
 	private Slider lineSlider = new Slider(1, 50, 5);
-	private ColorPicker lineColorPicker = new ColorPicker();
+	private ColorPicker lineColorPicker = new ColorPicker(Color.YELLOW);
 
 	private Label fillLbl = new Label("Relleno");
-	private ColorPicker fillColorPicker = new ColorPicker();
+	private ColorPicker fillColorPicker = new ColorPicker(Color.BLACK);
 
 	// Dibujar una figura
 	private Point startPoint;
@@ -136,6 +142,9 @@ public class PaintPane extends BorderPane {
 				return;
 			canvasState.addFigure(newFigure);
 			startPoint = null;
+			newFigure.setLineColor(lineColor);
+			newFigure.setFillColor(fillColor);
+			newFigure.setLineWidth(lineWidth);
 			redrawCanvas();
 		});
 
@@ -216,6 +225,33 @@ public class PaintPane extends BorderPane {
 			}
 		});
 
+		lineColorPicker.setOnAction(event -> {
+			if (selectedFigure != null) {
+				newLineColor = lineColorPicker.getValue();
+				redrawCanvas();
+				newLineColor = null;
+			}
+		});
+
+		fillColorPicker.setOnAction(event -> {
+			if (selectedFigure != null) {
+				newFillColor = fillColorPicker.getValue();
+				redrawCanvas();
+				newFillColor = null;
+			}
+		});
+
+		lineSlider.valueProperty().addListener(new ChangeListener<Number>() {
+			@Override
+			public void changed(ObservableValue<? extends Number> observableValue, Number oldV, Number newV) {
+				if (selectedFigure != null) {
+					newLineWidth = newV.doubleValue();
+					redrawCanvas();
+					newLineWidth = 0;
+				}
+			}
+		});
+
 		setLeft(buttonsBox);
 		setRight(canvas);
 		setTop(copyButtonsBox);
@@ -225,11 +261,21 @@ public class PaintPane extends BorderPane {
 		gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
 		for(Figure figure : canvasState.figures()) {
 			if(figure == selectedFigure) {
+				if (newLineColor != null) {
+					figure.setLineColor(newLineColor);
+				}
+				if (newFillColor != null) {
+					figure.setFillColor(newFillColor);
+				}
+				if (newLineWidth != 0) {
+					figure.setLineWidth(newLineWidth);
+				}
 				gc.setStroke(Color.RED);
 			} else {
-				gc.setStroke(lineColor);
+				gc.setStroke(figure.getLineColor());
 			}
-			gc.setFill(fillColor);
+			gc.setFill(figure.getFillColor());
+			gc.setLineWidth(figure.getLineWidth());
 			figure.draw();
 		}
 	}
