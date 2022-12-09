@@ -3,6 +3,7 @@ package frontend;
 import backend.CanvasState;
 import backend.model.Figure;
 import backend.model.*;
+import com.sun.javafx.scene.web.skin.HTMLEditorSkin;
 import frontend.interfaces.Drawable;
 import frontend.model.DrawableCircle;
 import frontend.model.DrawableEllipse;
@@ -13,9 +14,14 @@ import javafx.scene.Cursor;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+
+import java.util.ResourceBundle;
 
 public class PaintPane extends BorderPane {
 
@@ -36,7 +42,12 @@ public class PaintPane extends BorderPane {
 	private final ToggleButton ellipseButton = new ToggleButton("Elipse");
 	private final ToggleButton deleteButton = new ToggleButton("Borrar");
 
-	ToggleButton copyButton = new ToggleButton("Cop. Form.");
+	ToggleButton copyForButton = new ToggleButton("Cop. Form.");
+
+	//Botones Barra superior (cpy Menu)
+	Button copyButton = new Button ("Copiar", getImage("copyIcon"));
+	Button cutButton = new Button ("Cortar", getImage("cutIcon"));
+	Button pasteButton = new Button ("Pegar", getImage("pasteIcon"));
 
 	Label lineLbl = new Label("Borde");
 	Slider lineSlider = new Slider(1, 50, 5);
@@ -51,13 +62,16 @@ public class PaintPane extends BorderPane {
 	// Seleccionar una figura
 	private Figure selectedFigure;
 
+	// Figura copiada
+	private Figure copiedFigure = null;
+
 	// StatusBar
 	private final StatusPane statusPane;
 
 	public PaintPane(CanvasState canvasState, StatusPane statusPane) {
 		this.canvasState = canvasState;
 		this.statusPane = statusPane;
-		ToggleButton[] toolsArr = {selectionButton, rectangleButton, circleButton, squareButton, ellipseButton, deleteButton, copyButton};
+		ToggleButton[] toolsArr = {selectionButton, rectangleButton, circleButton, squareButton, ellipseButton, deleteButton, copyForButton};
 		ToggleGroup tools = new ToggleGroup();
 		for (ToggleButton tool : toolsArr) {
 			tool.setMinWidth(90);
@@ -71,6 +85,7 @@ public class PaintPane extends BorderPane {
 		setCursor(lineColorPicker);
 		setCursor(fillColorPicker);
 
+		// Left Buttons
 		VBox buttonsBox = new VBox(10);
 		buttonsBox.getChildren().addAll(toolsArr);
 		buttonsBox.getChildren().addAll(lineLbl, lineSlider, lineColorPicker, fillLbl, fillColorPicker);
@@ -78,6 +93,17 @@ public class PaintPane extends BorderPane {
 		buttonsBox.setStyle("-fx-background-color: #999");
 		buttonsBox.setPrefWidth(100);
 		gc.setLineWidth(1);
+
+		//Top Buttons (copy Menu)
+		HBox copyButtonsBox = new HBox(10);
+		Button[] copyToolsArr = { cutButton,copyButton,pasteButton};
+		for(Button tool : copyToolsArr) {
+			tool.setMinWidth(50);
+			tool.setCursor(Cursor.HAND);
+		}
+		copyButtonsBox.getChildren().addAll(copyToolsArr);
+		copyButtonsBox.setPadding(new Insets(5));
+		copyButtonsBox.setStyle("-fx-background-color: #999");
 
 		canvas.setOnMousePressed(event -> {
 			startPoint = new Point(event.getX(), event.getY());
@@ -169,8 +195,30 @@ public class PaintPane extends BorderPane {
 				redrawCanvas();
 			}
 		});
+
+		copyButton.setOnAction(event -> {
+			if ( selectedFigure != null ){
+				copiedFigure = selectedFigure;
+			}
+		});
+		cutButton.setOnAction(event -> {
+			if ( selectedFigure != null ) {
+				copyButton.fire();
+				deleteButton.fire();
+			}
+		});
+
+		pasteButton.setOnAction(event -> {
+			if ( copiedFigure != null ){
+				copiedFigure.move(200,290);
+				canvasState.addFigure(copiedFigure);
+				redrawCanvas();
+			}
+		});
+
 		setLeft(buttonsBox);
 		setRight(canvas);
+		setTop(copyButtonsBox);
 	}
 
 	void redrawCanvas() {
@@ -188,6 +236,12 @@ public class PaintPane extends BorderPane {
 
 	private void setCursor(Control o) {
 		o.setCursor(Cursor.HAND);
+	}
+
+	private ImageView getImage(String imagePath){
+		String cutIconPath = ResourceBundle.getBundle(HTMLEditorSkin.class.getName()).getString(imagePath);
+		Image cutIcon = new Image(HTMLEditorSkin.class.getResource(cutIconPath).toString());
+		return new ImageView(cutIcon);
 	}
 
 }
