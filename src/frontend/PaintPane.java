@@ -45,16 +45,16 @@ public class PaintPane extends BorderPane {
 	ToggleButton copyForButton = new ToggleButton("Cop. Form.");
 
 	//Botones Barra superior (cpy Menu)
-	Button copyButton = new Button ("Copiar", getImage("copyIcon"));
-	Button cutButton = new Button ("Cortar", getImage("cutIcon"));
-	Button pasteButton = new Button ("Pegar", getImage("pasteIcon"));
+	private final Button copyButton = new Button ("Copiar", getImage("copyIcon"));
+	private final Button cutButton = new Button ("Cortar", getImage("cutIcon"));
+	private final Button pasteButton = new Button ("Pegar", getImage("pasteIcon"));
 
-	Label lineLbl = new Label("Borde");
-	Slider lineSlider = new Slider(1, 50, 5);
-	ColorPicker lineColorPicker = new ColorPicker();
+	private Label lineLbl = new Label("Borde");
+	private Slider lineSlider = new Slider(1, 50, 5);
+	private ColorPicker lineColorPicker = new ColorPicker();
 
-	Label fillLbl = new Label("Relleno");
-	ColorPicker fillColorPicker = new ColorPicker();
+	private Label fillLbl = new Label("Relleno");
+	private ColorPicker fillColorPicker = new ColorPicker();
 
 	// Dibujar una figura
 	private Point startPoint;
