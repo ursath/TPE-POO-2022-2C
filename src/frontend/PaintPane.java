@@ -4,7 +4,6 @@ import backend.CanvasState;
 import backend.model.Figure;
 import backend.model.*;
 import com.sun.javafx.scene.web.skin.HTMLEditorSkin;
-import frontend.interfaces.Drawable;
 import frontend.model.DrawableCircle;
 import frontend.model.DrawableEllipse;
 import frontend.model.DrawableRectangle;
@@ -204,11 +203,18 @@ public class PaintPane extends BorderPane {
 				redrawCanvas();
 			}
 		});
+		/*
+		private final EventHandler<ActionEvent> copyHandler = new AdressHandler();
+		canvas.getOnKeyTyped(copyHandler){
+			if (  )
+		}
+	*/
+
 
 		copyButton.setOnAction(event -> {
 			if ( selectedFigure != null ){
 				copiedFigure = selectedFigure.getDuplicate(new Point(400,300));
-				//canvas.
+				copiedFigure.copyFormat(selectedFigure);
 			}
 		});
 		cutButton.setOnAction(event -> {
@@ -221,6 +227,7 @@ public class PaintPane extends BorderPane {
 		pasteButton.setOnAction(event -> {
 			if ( copiedFigure != null ){
 				canvasState.addFigure(copiedFigure);
+				selectedFigure = null;
 				redrawCanvas();
 			}
 		});
