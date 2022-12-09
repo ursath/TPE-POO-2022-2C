@@ -33,12 +33,12 @@ public class PaintPane extends BorderPane {
 	// Canvas y relacionados
 	private final Canvas canvas = new Canvas(800, 600);
 	private final GraphicsContext gc = canvas.getGraphicsContext2D();
-	private final Color lineColor = Color.BLACK;
-	private final Color fillColor = Color.YELLOW;
-	double lineWidth = 1;
+	private Color lineColor = Color.BLACK;
+	private Color fillColor = Color.YELLOW;
+	private double lineWidth = 1;
 	private Color newLineColor = null;
 	private Color newFillColor = null;
-	private double newLineWidth = 0;
+	private double newLineWidth;
 
 	// Botones Barra Izquierda
 	private final ToggleButton selectionButton = new ToggleButton("Seleccionar");
@@ -225,29 +225,49 @@ public class PaintPane extends BorderPane {
 			}
 		});
 
-		lineColorPicker.setOnAction(event -> {
+		copyForButton.setOnAction(event -> {
 			if (selectedFigure != null) {
-				newLineColor = lineColorPicker.getValue();
+				newLineWidth = selectedFigure.getLineWidth();
+				newFillColor = selectedFigure.getFillColor();
+				newLineColor = selectedFigure.getLineColor();
+			}
+		});
+
+		lineColorPicker.setOnAction(event -> {
+			lineColor = lineColorPicker.getValue();
+			if (selectedFigure != null) {
+				for(Figure figure : canvasState.figures()) {
+					if(figure == selectedFigure) {
+						figure.setLineColor(lineColor);
+					}
+				}
 				redrawCanvas();
-				newLineColor = null;
 			}
 		});
 
 		fillColorPicker.setOnAction(event -> {
+			fillColor = fillColorPicker.getValue();
 			if (selectedFigure != null) {
-				newFillColor = fillColorPicker.getValue();
+				for(Figure figure : canvasState.figures()) {
+					if (figure == selectedFigure) {
+						figure.setFillColor(fillColor);
+					}
+				}
 				redrawCanvas();
-				newFillColor = null;
 			}
 		});
 
 		lineSlider.valueProperty().addListener(new ChangeListener<Number>() {
 			@Override
 			public void changed(ObservableValue<? extends Number> observableValue, Number oldV, Number newV) {
+				lineWidth = newV.doubleValue();
 				if (selectedFigure != null) {
-					newLineWidth = newV.doubleValue();
+					for(Figure figure : canvasState.figures()) {
+						if (figure == selectedFigure) {
+							figure.setLineWidth(lineWidth);
+						}
+					}
 					redrawCanvas();
-					newLineWidth = 0;
 				}
 			}
 		});
@@ -261,14 +281,11 @@ public class PaintPane extends BorderPane {
 		gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
 		for(Figure figure : canvasState.figures()) {
 			if(figure == selectedFigure) {
-				if (newLineColor != null) {
-					figure.setLineColor(newLineColor);
-				}
 				if (newFillColor != null) {
-					figure.setFillColor(newFillColor);
-				}
-				if (newLineWidth != 0) {
 					figure.setLineWidth(newLineWidth);
+					figure.setFillColor(newFillColor);
+					figure.setLineColor(newLineColor);
+					newFillColor = null;
 				}
 				gc.setStroke(Color.RED);
 			} else {
