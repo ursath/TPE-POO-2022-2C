@@ -24,7 +24,6 @@ public class DrawableCircle extends Circle {
     @Override
     public Figure getDuplicate(Point center){
         DrawableCircle toReturn = new DrawableCircle(center,getRadius(),gc );
-        //CPY FORMAT
         return toReturn;
     }
 }

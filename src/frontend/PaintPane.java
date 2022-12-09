@@ -213,6 +213,7 @@ public class PaintPane extends BorderPane {
 
 		copyButton.setOnAction(event -> {
 			if ( selectedFigure != null ){
+				// copyFigure(selectedFigure,)
 				copiedFigure = selectedFigure.getDuplicate(new Point(400,300));
 				copiedFigure.copyFormat(selectedFigure);
 			}
@@ -226,7 +227,10 @@ public class PaintPane extends BorderPane {
 
 		pasteButton.setOnAction(event -> {
 			if ( copiedFigure != null ){
-				canvasState.addFigure(copiedFigure);
+				//ver si se puede crear un método para q no se repita cod
+				Figure aux = copiedFigure.getDuplicate(new Point(400,300));
+				aux.copyFormat(copiedFigure);
+				canvasState.addFigure(aux);
 				selectedFigure = null;
 				redrawCanvas();
 			}

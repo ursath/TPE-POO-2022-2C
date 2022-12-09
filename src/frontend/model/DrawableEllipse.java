@@ -21,7 +21,6 @@ public class DrawableEllipse extends Ellipse  {
     @Override
     public Figure getDuplicate(Point center){
         DrawableEllipse toReturn = new DrawableEllipse(center,getsMinorAxis(),getsMayorAxis(),gc);
-        //CPY FORMAT
         return toReturn;
     }
 }
