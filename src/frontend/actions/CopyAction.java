@@ -1,4 +1,4 @@
-package frontend;
+package frontend.actions;
 
 import backend.model.Figure;
 import backend.model.Point;
