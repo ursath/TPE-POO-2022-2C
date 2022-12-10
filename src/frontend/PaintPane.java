@@ -4,14 +4,13 @@ import backend.CanvasState;
 import backend.model.Figure;
 import backend.model.*;
 import com.sun.javafx.scene.web.skin.HTMLEditorSkin;
+import frontend.actions.CreateRectangleAction;
 import frontend.model.DrawableCircle;
 import frontend.model.DrawableEllipse;
-import frontend.model.DrawableRectangle;
 import frontend.model.DrawableSquare;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -25,7 +24,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.control.Label;
 import javafx.scene.control.Button;
 
-import javax.swing.*;
 import java.util.ResourceBundle;
 
 public class PaintPane extends BorderPane {
@@ -142,7 +140,8 @@ public class PaintPane extends BorderPane {
 			}
 			Figure newFigure;
 			if(rectangleButton.isSelected()) {
-				newFigure = new DrawableRectangle(startPoint, endPoint, gc);
+				CreateRectangleAction createRectangle = new CreateRectangleAction(startPoint, event, gc, canvasState, lineColor, fillColor, lineWidth);
+				createRectangle.press();
 			}
 			else if(circleButton.isSelected()) {
 				double circleRadius = Math.abs(endPoint.getX() - startPoint.getX());
@@ -157,11 +156,7 @@ public class PaintPane extends BorderPane {
 				newFigure = new DrawableEllipse(centerPoint, sMayorAxis, sMinorAxis, gc);
 			} else
 				return;
-			canvasState.addFigure(newFigure);
 			startPoint = null;
-			newFigure.setLineColor(lineColor);
-			newFigure.setFillColor(fillColor);
-			newFigure.setLineWidth(lineWidth);
 			redrawCanvas();
 		});
 
@@ -258,7 +253,7 @@ public class PaintPane extends BorderPane {
 			if ( selectedFigure != null ){
 				// copyFigure(selectedFigure,)
 				copiedFigure = selectedFigure.getDuplicate(new Point(400,300));
-				copiedFigure.copyFormat(selectedFigure);
+				copiedFigure.setFormat(selectedFigure.getLineColor(),selectedFigure.getFillColor(),selectedFigure.getLineWidth());
 			}
 		});
 		cutButton.setOnAction(event -> {
@@ -272,7 +267,7 @@ public class PaintPane extends BorderPane {
 			if ( copiedFigure != null ){
 				//ver si se puede crear un método para q no se repita cod
 				Figure aux = copiedFigure.getDuplicate(new Point(400,300));
-				aux.copyFormat(copiedFigure);
+				aux.setFormat(copiedFigure.getLineColor(),copiedFigure.getFillColor(),copiedFigure.getLineWidth());
 				canvasState.addFigure(aux);
 				selectedFigure = null;
 				redrawCanvas();
