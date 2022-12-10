@@ -263,8 +263,11 @@ public class PaintPane extends BorderPane {
 		});
 		cutButton.setOnAction(event -> {
 			if ( selectedFigure != null ) {
-				copyButton.fire();
-				deleteButton.fire();
+				//copyButton.fire();
+				//deleteButton.fire();
+				CutAction cutAction = new CutAction(selectedFigure);
+				cutAction.press();
+				copiedFigure = cutAction.getCopiedFigure();
 			}
 		});
 
