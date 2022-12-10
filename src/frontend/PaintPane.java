@@ -11,6 +11,7 @@ import frontend.model.DrawableSquare;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -21,6 +22,8 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.control.Label;
+import javafx.scene.control.Button;
 
 import java.util.ResourceBundle;
 
@@ -53,7 +56,8 @@ public class PaintPane extends BorderPane {
 	private final Button copyButton = new Button ("Copiar", getImage("copyIcon"));
 	private final Button cutButton = new Button ("Cortar", getImage("cutIcon"));
 	private final Button pasteButton = new Button ("Pegar", getImage("pasteIcon"));
-
+	private final Button undoButton = new Button ("Deshacer", getImage("undoIcon"));
+	private final Button redoButton = new Button("Rehacer", getImage("redoIcon"));
 	private Label lineLbl = new Label("Borde");
 	private Slider lineSlider = new Slider(1, 50, 5);
 	private ColorPicker lineColorPicker = new ColorPicker(Color.YELLOW);
@@ -63,6 +67,7 @@ public class PaintPane extends BorderPane {
 
 	// Dibujar una figura
 	private Point startPoint;
+	private boolean newFormat = true;
 
 	// Seleccionar una figura
 	private Figure selectedFigure;
@@ -109,6 +114,19 @@ public class PaintPane extends BorderPane {
 		copyButtonsBox.getChildren().addAll(copyToolsArr);
 		copyButtonsBox.setPadding(new Insets(5));
 		copyButtonsBox.setStyle("-fx-background-color: #999");
+
+		HBox doButtonsBox = new HBox(10);
+		Button[] doToolsArr = { undoButton, redoButton};
+		for(Button tool : doToolsArr) {
+			tool.setMinWidth(50);
+			tool.setCursor(Cursor.HAND);
+		}
+		doButtonsBox.getChildren().addAll(doToolsArr);
+		doButtonsBox.setPadding(new Insets(5));
+		doButtonsBox.setStyle("-fx-background-color: #999");
+
+		VBox topButtonsBox = new VBox(0);
+		topButtonsBox.getChildren().addAll(copyButtonsBox, doButtonsBox);
 
 		canvas.setOnMousePressed(event -> {
 			startPoint = new Point(event.getX(), event.getY());
@@ -182,17 +200,32 @@ public class PaintPane extends BorderPane {
 					selectedFigure = null;
 					statusPane.updateStatus("Ninguna figura encontrada");
 				}
-				redrawCanvas();
 			}
+			else if (copyForButton.isSelected()) {
+				if (newFormat) {
+					Point eventPoint = new Point(event.getX(), event.getY());
+					for (Figure figure : canvasState.figures()) {
+						if (figure.belongs(eventPoint)) {
+							figure.setLineColor(newLineColor);
+							figure.setLineWidth(newLineWidth);
+							figure.setFillColor(newFillColor);
+						}
+					}
+					newFormat = false;
+				}
+			}
+			redrawCanvas();
 		});
 
 		canvas.setOnMouseDragged(event -> {
 			if(selectionButton.isSelected()) {
-				Point eventPoint = new Point(event.getX(), event.getY());
-				double diffX = (eventPoint.getX() - startPoint.getX()) / 100;
-				double diffY = (eventPoint.getY() - startPoint.getY()) / 100;
-				selectedFigure.move(diffX, diffY);
-				redrawCanvas();
+				if (selectedFigure != null) {
+					Point eventPoint = new Point(event.getX(), event.getY());
+					double diffX = (eventPoint.getX() - startPoint.getX()) / 100;
+					double diffY = (eventPoint.getY() - startPoint.getY()) / 100;
+					selectedFigure.move(diffX, diffY);
+					redrawCanvas();
+				}
 			}
 		});
 
@@ -237,6 +270,8 @@ public class PaintPane extends BorderPane {
 				newLineWidth = selectedFigure.getLineWidth();
 				newFillColor = selectedFigure.getFillColor();
 				newLineColor = selectedFigure.getLineColor();
+				newFormat = true;
+				selectedFigure = null;
 			}
 		});
 
@@ -281,19 +316,13 @@ public class PaintPane extends BorderPane {
 
 		setLeft(buttonsBox);
 		setRight(canvas);
-		setTop(copyButtonsBox);
+		setTop(topButtonsBox);
 	}
 
 	void redrawCanvas() {
 		gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
 		for(Figure figure : canvasState.figures()) {
 			if(figure == selectedFigure) {
-				if (newFillColor != null) {
-					figure.setLineWidth(newLineWidth);
-					figure.setFillColor(newFillColor);
-					figure.setLineColor(newLineColor);
-					newFillColor = null;
-				}
 				gc.setStroke(Color.RED);
 			} else {
 				gc.setStroke(figure.getLineColor());

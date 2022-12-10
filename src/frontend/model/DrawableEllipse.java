@@ -10,7 +10,7 @@ public class DrawableEllipse extends Ellipse  {
     private GraphicsContext gc;
 
     public DrawableEllipse(Point centerPoint, double sMayorAxis, double sMinorAxis, GraphicsContext gc){
-        super(centerPoint, sMinorAxis, sMayorAxis);
+        super(centerPoint, sMayorAxis, sMinorAxis);
         this.gc = gc;
     }
 
@@ -20,7 +20,7 @@ public class DrawableEllipse extends Ellipse  {
     }
     @Override
     public Figure getDuplicate(Point center){
-        DrawableEllipse toReturn = new DrawableEllipse(center,getsMinorAxis(),getsMayorAxis(),gc);
+        DrawableEllipse toReturn = new DrawableEllipse(center,getsMayorAxis(),getsMinorAxis(),gc);
         //CPY FORMAT
         return toReturn;
     }
