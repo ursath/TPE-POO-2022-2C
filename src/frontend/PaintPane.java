@@ -4,8 +4,7 @@ import backend.CanvasState;
 import backend.model.Figure;
 import backend.model.*;
 import com.sun.javafx.scene.web.skin.HTMLEditorSkin;
-import frontend.actions.CopyAction;
-import frontend.actions.CreateRectangleAction;
+import frontend.actions.*;
 import frontend.model.DrawableCircle;
 import frontend.model.DrawableEllipse;
 import frontend.model.DrawableSquare;
@@ -145,22 +144,18 @@ public class PaintPane extends BorderPane {
 			if(endPoint.getX() < startPoint.getX() || endPoint.getY() < startPoint.getY()) {
 				return ;
 			}
-			Figure newFigure;
 			if(rectangleButton.isSelected()) {
 				CreateRectangleAction createRectangle = new CreateRectangleAction(startPoint, event, gc, canvasState, lineColor, fillColor, lineWidth);
 				createRectangle.press();
-			}
-			else if(circleButton.isSelected()) {
-				double circleRadius = Math.abs(endPoint.getX() - startPoint.getX());
-				newFigure = new DrawableCircle(startPoint, circleRadius, gc);
+			} else if(circleButton.isSelected()) {
+				CreateCircleAction createCircle = new CreateCircleAction(startPoint, event, gc, canvasState, lineColor, fillColor, lineWidth);
+				createCircle.press();
 			} else if(squareButton.isSelected()) {
-				double size = Math.abs(endPoint.getX() - startPoint.getX());
-				newFigure = new DrawableSquare(startPoint, size, gc);
+				CreateSquareAction createSquare = new CreateSquareAction(startPoint, event, gc, canvasState, lineColor, fillColor, lineWidth);
+				createSquare.press();
 			} else if(ellipseButton.isSelected()) {
-				Point centerPoint = new Point(Math.abs(endPoint.getX() + startPoint.getX()) / 2, (Math.abs((endPoint.getY() + startPoint.getY())) / 2));
-				double sMayorAxis = Math.abs(endPoint.getX() - startPoint.getX());
-				double sMinorAxis = Math.abs(endPoint.getY() - startPoint.getY());
-				newFigure = new DrawableEllipse(centerPoint, sMayorAxis, sMinorAxis, gc);
+				CreateEllipseAction createEllipse = new CreateEllipseAction(startPoint, event, gc, canvasState, lineColor, fillColor, lineWidth);
+				createEllipse.press();
 			} else
 				return;
 			startPoint = null;
