@@ -4,6 +4,7 @@ import backend.CanvasState;
 import backend.model.Figure;
 import backend.model.*;
 import com.sun.javafx.scene.web.skin.HTMLEditorSkin;
+import frontend.actions.CopyAction;
 import frontend.actions.CreateRectangleAction;
 import frontend.model.DrawableCircle;
 import frontend.model.DrawableEllipse;
@@ -80,6 +81,9 @@ public class PaintPane extends BorderPane {
 	public PaintPane(CanvasState canvasState, StatusPane statusPane) {
 		this.canvasState = canvasState;
 		this.statusPane = statusPane;
+
+		// Botones
+
 		ToggleButton[] toolsArr = {selectionButton, rectangleButton, circleButton, squareButton, ellipseButton, deleteButton, copyForButton};
 		ToggleGroup tools = new ToggleGroup();
 		for (ToggleButton tool : toolsArr) {
@@ -125,6 +129,9 @@ public class PaintPane extends BorderPane {
 		VBox topButtonsBox = new VBox(0);
 		topButtonsBox.getChildren().addAll(copyButtonsBox, doButtonsBox);
 		topButtonsBox.setStyle("-fx-background-color: #999");
+
+
+		//Manejo de acciones
 
 		canvas.setOnMousePressed(event -> {
 			startPoint = new Point(event.getX(), event.getY());
@@ -252,8 +259,11 @@ public class PaintPane extends BorderPane {
 		copyButton.setOnAction(event -> {
 			if ( selectedFigure != null ){
 				// copyFigure(selectedFigure,)
-				copiedFigure = selectedFigure.getDuplicate(new Point(400,300));
-				copiedFigure.setFormat(selectedFigure.getLineColor(),selectedFigure.getFillColor(),selectedFigure.getLineWidth());
+				//copiedFigure = selectedFigure.getDuplicate(new Point(400,300));
+				//copiedFigure.setFormat(selectedFigure.getLineColor(),selectedFigure.getFillColor(),selectedFigure.getLineWidth());
+				CopyAction copyAction = new CopyAction(selectedFigure);
+				copyAction.press();
+				copiedFigure = copyAction.getCopiedFigure();
 			}
 		});
 		cutButton.setOnAction(event -> {
