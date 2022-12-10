@@ -243,7 +243,6 @@ public class PaintPane extends BorderPane {
 		}
 	*/
 
-
 		copyButton.setOnAction(event -> {
 			if ( selectedFigure != null ){
 				// copyFigure(selectedFigure,)

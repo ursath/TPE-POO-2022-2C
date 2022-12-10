@@ -7,7 +7,7 @@ import frontend.interfaces.Drawable;
 import javafx.scene.canvas.GraphicsContext;
 
 public class DrawableEllipse extends Ellipse  {
-    private GraphicsContext gc;
+    private final GraphicsContext gc;
 
     public DrawableEllipse(Point centerPoint, double sMayorAxis, double sMinorAxis, GraphicsContext gc){
         super(centerPoint, sMayorAxis, sMinorAxis);
