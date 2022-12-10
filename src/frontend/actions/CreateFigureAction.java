@@ -34,3 +34,4 @@ public abstract class CreateFigureAction {
         newFigure.setLineColor(lineColor);
     }
 }
+
