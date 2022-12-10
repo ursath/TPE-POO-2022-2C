@@ -10,9 +10,9 @@ import javafx.scene.input.MouseEvent;
 
 public abstract class CreateFigureAction {
     protected Figure newFigure;
-    protected CanvasState canvasState;
+    private final CanvasState canvasState;
 
-    public CreateFigureAction(CanvasState canvasState) {
+    protected CreateFigureAction(CanvasState canvasState) {
         this.canvasState = canvasState;
     }
 

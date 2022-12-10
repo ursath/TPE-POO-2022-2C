@@ -6,26 +6,16 @@ import backend.model.Point;
 import frontend.actions.CreateCircleAction;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
 
-public class DeleteCircleAction {
+public class DeleteCircleAction extends DeleteFigureAction {
 
-    private Figure selectedFigure;
-    private CreateCircleAction oppositeAction;
 
-    DeleteCircleAction(Figure selectedFigure, Point startPoint, MouseEvent event, GraphicsContext gc, CanvasState canvasState) {
-        this.selectedFigure = selectedFigure;
-        this.oppositeAction = new CreateCircleAction(startPoint, event, gc, canvasState);
-    }
-
-    public void undo() {
-        oppositeAction.press();
-    }
-
-    public void press() {
-        oppositeAction.undo();
+    public DeleteCircleAction(Figure selectedFigure, Point startPoint, MouseEvent event, GraphicsContext gc, CanvasState canvasState, Color lineColor, Color fillColor, double width) {
+        super(new CreateCircleAction(startPoint, event, gc, canvasState, lineColor, fillColor, width));
     }
 
     public String toString(){
-        return "Borrar Circulo";
+        return  super.toString()+"Circulo";
     }
 }
