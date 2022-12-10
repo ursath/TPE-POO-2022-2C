@@ -295,11 +295,8 @@ public class PaintPane extends BorderPane {
 		lineColorPicker.setOnAction(event -> {
 			lineColor = lineColorPicker.getValue();
 			if (selectedFigure != null) {
-				for(Figure figure : canvasState.figures()) {
-					if(figure == selectedFigure) {
-						figure.setLineColor(lineColor);
-					}
-				}
+				LineColorAction lineColorAction = new LineColorAction(selectedFigure, lineColor, canvasState);
+				lineColorAction.press();
 				redrawCanvas();
 			}
 		});
@@ -307,11 +304,8 @@ public class PaintPane extends BorderPane {
 		fillColorPicker.setOnAction(event -> {
 			fillColor = fillColorPicker.getValue();
 			if (selectedFigure != null) {
-				for(Figure figure : canvasState.figures()) {
-					if (figure == selectedFigure) {
-						figure.setFillColor(fillColor);
-					}
-				}
+				FillColorAction fillColorAction = new FillColorAction(selectedFigure, fillColor, canvasState);
+				fillColorAction.press();
 				redrawCanvas();
 			}
 		});
