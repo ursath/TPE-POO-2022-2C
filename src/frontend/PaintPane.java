@@ -25,6 +25,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.control.Label;
 import javafx.scene.control.Button;
 
+import javax.swing.*;
 import java.util.ResourceBundle;
 
 public class PaintPane extends BorderPane {
@@ -113,7 +114,6 @@ public class PaintPane extends BorderPane {
 		}
 		copyButtonsBox.getChildren().addAll(copyToolsArr);
 		copyButtonsBox.setPadding(new Insets(5));
-		copyButtonsBox.setStyle("-fx-background-color: #999");
 
 		HBox doButtonsBox = new HBox(10);
 		Button[] doToolsArr = { undoButton, redoButton};
@@ -123,10 +123,10 @@ public class PaintPane extends BorderPane {
 		}
 		doButtonsBox.getChildren().addAll(doToolsArr);
 		doButtonsBox.setPadding(new Insets(5));
-		doButtonsBox.setStyle("-fx-background-color: #999");
 
 		VBox topButtonsBox = new VBox(0);
 		topButtonsBox.getChildren().addAll(copyButtonsBox, doButtonsBox);
+		topButtonsBox.setStyle("-fx-background-color: #999");
 
 		canvas.setOnMousePressed(event -> {
 			startPoint = new Point(event.getX(), event.getY());
@@ -236,12 +236,23 @@ public class PaintPane extends BorderPane {
 				redrawCanvas();
 			}
 		});
-		/*
-		private final EventHandler<ActionEvent> copyHandler = new AdressHandler();
-		canvas.getOnKeyTyped(copyHandler){
-			if (  )
-		}
-	*/
+
+		this.setOnKeyPressed(event -> {
+			if ( event.isControlDown()  ) {
+				switch (event.getCode()) {
+					case C:
+						copyButton.fire();
+						break;
+					case X:
+						cutButton.fire();
+						break;
+					case V:
+						pasteButton.fire();
+						break;
+				}
+			}
+		});
+
 
 		copyButton.setOnAction(event -> {
 			if ( selectedFigure != null ){
