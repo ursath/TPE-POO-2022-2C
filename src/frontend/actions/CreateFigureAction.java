@@ -9,21 +9,23 @@ import javafx.scene.paint.Color;
 import javafx.scene.input.MouseEvent;
 
 public abstract class CreateFigureAction {
-    private Point startPoint;
-    private Point endPoint;
     protected Figure newFigure;
     protected CanvasState canvasState;
 
-    public CreateFigureAction(Point startPoint, MouseEvent event, GraphicsContext gc, CanvasState canvasState,
-                              Color lineColor, Color fillColor, double width) {
+    public CreateFigureAction(CanvasState canvasState) {
         this.canvasState = canvasState;
-        // Se deberia primero instanciar la figura en el constructor de la clase hija antes de llamar al constructor
-        // de la clase padre (asi mi newFigure no es null)
-          }
+    }
+
+    public void press() {
+        canvasState.addFigure(newFigure);
+    }
+
+    public void undo(){
+        canvasState.deleteFigure(newFigure);
+    }
 
     public String toString() {
         return "Dibujar ";
     }
-
 }
 

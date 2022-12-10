@@ -11,21 +11,14 @@ import javafx.scene.paint.Color;
 
 public class CreateRectangleAction extends CreateFigureAction {
 
-    CreateRectangleAction(Point startPoint, MouseEvent event, GraphicsContext gc, CanvasState canvasState, Color lineColor, Color fillColor, double width){
-        super(startPoint, event, gc, canvasState, lineColor, fillColor, width);
+    public CreateRectangleAction(Point startPoint, MouseEvent event, GraphicsContext gc, CanvasState canvasState, Color lineColor, Color fillColor, double width){
+        super(canvasState);
         newFigure = new DrawableRectangle(startPoint, new Point(event.getX(), event.getY()), gc);
         newFigure.setFormat(lineColor, fillColor, width);
     }
 
-    public void press() {
-        canvasState.addFigure(newFigure);
-    }
-
-    public void undo(){
-        canvasState.deleteFigure(newFigure);
-    }
-
+    @Override
     public String toString(){
-        return "Dibujar Rectángulo";
+        return super.toString() + "Rectángulo";
     }
 }
