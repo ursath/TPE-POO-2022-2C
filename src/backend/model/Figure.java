@@ -38,9 +38,9 @@ public abstract class Figure implements Movable, Drawable {
         this.lineWidth = lineWidth;
     }
 
-    public void copyFormat(Figure orignal){
-        setFillColor(orignal.getFillColor());
-        setLineColor(orignal.getLineColor());
-        setLineWidth(orignal.getLineWidth());
+    public void setFormat(Color lineColor, Color fillColor, double width) {
+        setLineWidth(width);
+        setFillColor(fillColor);
+        setLineColor(lineColor);
     }
 }

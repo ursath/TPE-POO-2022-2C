@@ -14,7 +14,7 @@ public class CopyAction {
 
     public void press(){
         this.copiedFigure = selectedFigure.getDuplicate(center);
-        this.copiedFigure.copyFormat(selectedFigure);
+        this.copiedFigure.setFormat(selectedFigure.getLineColor(), selectedFigure.getFillColor(), selectedFigure.getLineWidth());
     }
 
     public void undo(){

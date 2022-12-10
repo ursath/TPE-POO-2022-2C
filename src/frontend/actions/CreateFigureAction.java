@@ -21,17 +21,12 @@ public abstract class CreateFigureAction {
         this.canvasState = canvasState;
         // Se deberia primero instanciar la figura en el constructor de la clase hija antes de llamar al constructor
         // de la clase padre (asi mi newFigure no es null)
-        setFormat(lineColor, fillColor, width);
+        newFigure.setFormat(lineColor, fillColor, width);
     }
 
     public String toString() {
         return "Dibujar ";
     }
 
-    public void setFormat(Color lineColor, Color fillColor, double width) {
-        newFigure.setLineWidth(width);
-        newFigure.setFillColor(fillColor);
-        newFigure.setLineColor(lineColor);
-    }
 }
 
