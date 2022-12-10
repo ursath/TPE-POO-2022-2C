@@ -8,7 +8,7 @@ public class CopyAction {
     private Figure copiedFigure;
     private final Point center = new Point(400, 300);
 
-    CopyAction(Figure selectedFigure){
+    public CopyAction(Figure selectedFigure){
         this.selectedFigure = selectedFigure;
     }
 
@@ -23,5 +23,9 @@ public class CopyAction {
 
     public String toString(){
         return String.format("Copiar %s", selectedFigure);
+    }
+
+    public Figure getCopiedFigure() {
+        return copiedFigure;
     }
 }
