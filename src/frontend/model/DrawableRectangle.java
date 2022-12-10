@@ -27,7 +27,6 @@ public class DrawableRectangle extends Rectangle implements Drawable{
         Point bottomRight = getBottomRight();
         DrawableRectangle toReturn = new DrawableRectangle(topLeft,bottomRight,gc);
         toReturn.move(center.getX()-topLeft.getX(), center.getY()- bottomRight.getY());
-        //CPY FORMAT
         return toReturn;
     }
 

@@ -32,7 +32,6 @@ public class DrawableSquare extends Square {
         double size = getSize()/2;
         DrawableSquare toReturn = new DrawableSquare(topLeft,getSize(), gc);
         toReturn.move(center.getX()-topLeft.getX()-size, center.getY()-getTopLeft().getY()-size);
-        //CPY FORMAT
         return toReturn;
     }
 }
