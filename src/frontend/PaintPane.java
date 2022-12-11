@@ -62,10 +62,10 @@ public class PaintPane extends BorderPane {
 
 	private Label lineLbl = new Label("Borde");
 	private Slider lineSlider = new Slider(1, 50, 5);
-	private ColorPicker lineColorPicker = new ColorPicker(Color.YELLOW);
+	private ColorPicker lineColorPicker = new ColorPicker(Color.BLACK);
 
 	private Label fillLbl = new Label("Relleno");
-	private ColorPicker fillColorPicker = new ColorPicker(Color.BLACK);
+	private ColorPicker fillColorPicker = new ColorPicker(Color.YELLOW);
 
 	// Dibujar una figura
 	private Point startPoint;
