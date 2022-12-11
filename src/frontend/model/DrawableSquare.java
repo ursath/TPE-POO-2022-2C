@@ -2,23 +2,19 @@ package frontend.model;
 
 import backend.model.Figure;
 import backend.model.Point;
-import backend.model.Rectangle;
 import backend.model.Square;
-import frontend.interfaces.Drawable;
 import javafx.scene.canvas.GraphicsContext;
 
 public class DrawableSquare extends Square {
 
-    private GraphicsContext gc;
-    public DrawableSquare(Point topLeft, double size, GraphicsContext gc){
+    private final GraphicsContext gc;
 
-        /* si rectangle
-        super(topLeft, new Point(topLeft.getX() + size, topLeft.getY() + size));
-        */
+    public DrawableSquare(Point topLeft, double size, GraphicsContext gc){
         super(topLeft,size);
         this.gc = gc;
     }
 
+    @Override
     public void draw(){
         gc.fillRect(getTopLeft().getX(), getTopLeft().getY(),
                 Math.abs(getTopLeft().getX() - getBottomRight().getX()), Math.abs(getTopLeft().getY() - getBottomRight().getY()));
@@ -28,7 +24,7 @@ public class DrawableSquare extends Square {
 
     @Override
     public Figure getDuplicate(Point center) {
-        Point topLeft = getTopLeft();               //raro q no funcione, porque con rectangle si funciona
+        Point topLeft = getTopLeft();                       // MAL CENTRADO
         double size = getSize()/2;
         DrawableSquare toReturn = new DrawableSquare(topLeft,getSize(), gc);
         toReturn.move(center.getX()-topLeft.getX()-size, center.getY()-getTopLeft().getY()-size);

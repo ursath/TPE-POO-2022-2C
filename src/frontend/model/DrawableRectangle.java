@@ -7,13 +7,15 @@ import javafx.scene.canvas.GraphicsContext;
 import frontend.interfaces.Drawable;
 
 public class DrawableRectangle extends Rectangle implements Drawable{
-    private GraphicsContext gc;
+
+    private final GraphicsContext gc;
 
     public DrawableRectangle(Point topLeft, Point bottomRight, GraphicsContext gc){
         super(topLeft, bottomRight);
         this.gc = gc;
     }
 
+    @Override
     public void draw(){
         gc.fillRect(getTopLeft().getX(), getTopLeft().getY(),
                 Math.abs(getTopLeft().getX() - getBottomRight().getX()), Math.abs(getTopLeft().getY() - getBottomRight().getY()));
