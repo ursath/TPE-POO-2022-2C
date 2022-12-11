@@ -53,11 +53,17 @@ public class CanvasState {
     }
 
     public Undoable getNextUndo(){
-        return toUndo.peek();
+        if (getUndoableAvailable() != 0) {
+            return toUndo.peek();
+        }
+        return null;
     }
 
     public Undoable getNextRedo(){
-        return toRedo.peek();
+        if (getRedoableAvailable() != 0) {
+            return toRedo.peek();
+        }
+        return null;
     }
 
     public int getRedoableAvailable(){

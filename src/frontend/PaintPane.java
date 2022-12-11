@@ -11,6 +11,7 @@ import frontend.model.DrawableSquare;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -80,6 +81,8 @@ public class PaintPane extends BorderPane {
 	// StatusBar
 	private final StatusPane statusPane;
 
+	private Label undoLabel, redoLabel;
+
 	public PaintPane(CanvasState canvasState, StatusPane statusPane) {
 		this.canvasState = canvasState;
 		this.statusPane = statusPane;
@@ -120,12 +123,22 @@ public class PaintPane extends BorderPane {
 		copyButtonsBox.setPadding(new Insets(5));
 
 		HBox doButtonsBox = new HBox(10);
+		doButtonsBox.setAlignment(Pos.CENTER);
+		undoLabel = new Label("");
+		redoLabel = new Label("");
+		undoLabel.setText(String.format("%s %d",canvasState.getNextUndo() == null ? "" : canvasState.getNextUndo().toString(), canvasState.getUndoableAvailable()));
+		redoLabel.setText(String.format("%d %s", canvasState.getRedoableAvailable(), canvasState.getNextRedo() == null ? "" : canvasState.getNextRedo().toString()));
+		undoLabel.setStyle("-fx-font-size: 16");
+		redoLabel.setStyle("-fx-font-size: 16");
 		Button[] doToolsArr = { undoButton, redoButton};
 		for(Button tool : doToolsArr) {
 			tool.setMinWidth(50);
 			tool.setCursor(Cursor.HAND);
 		}
-		doButtonsBox.getChildren().addAll(doToolsArr);
+		doButtonsBox.getChildren().add(undoLabel);
+		doButtonsBox.getChildren().add(undoButton);
+		doButtonsBox.getChildren().add(redoButton);
+		doButtonsBox.getChildren().add(redoLabel);
 		doButtonsBox.setPadding(new Insets(5));
 
 		VBox topButtonsBox = new VBox(0);
@@ -195,6 +208,7 @@ public class PaintPane extends BorderPane {
 				}
 				if (found) {
 					statusPane.updateStatus(label.toString());
+
 				} else {
 					selectedFigure = null;
 					statusPane.updateStatus("Ninguna figura encontrada");
@@ -257,6 +271,7 @@ public class PaintPane extends BorderPane {
 				//copiedFigure.setFormat(selectedFigure.getLineColor(),selectedFigure.getFillColor(),selectedFigure.getLineWidth());
 				CopyAction copyAction = new CopyAction(selectedFigure);
 				copyAction.press();
+				canvasState.addUndoableAction(copyAction);
 				copiedFigure = copyAction.getCopiedFigure();
 			}
 		});
@@ -267,6 +282,7 @@ public class PaintPane extends BorderPane {
 				//deleteButton.fire();
 				CutAction cutAction = new CutAction(selectedFigure, canvasState);
 				cutAction.press();
+				canvasState.addUndoableAction(cutAction);
 				copiedFigure = cutAction.getCopiedFigure();
 				redrawCanvas();
 			}
@@ -280,6 +296,7 @@ public class PaintPane extends BorderPane {
 			//	canvasState.addFigure(aux);
 				PasteAction pasteAction = new PasteAction(copiedFigure,canvasState);
 				pasteAction.press();
+				canvasState.addUndoableAction(pasteAction);
 				selectedFigure = null;
 				redrawCanvas();
 			}
@@ -360,6 +377,8 @@ public class PaintPane extends BorderPane {
 			}
 			gc.setFill(figure.getFillColor());
 			gc.setLineWidth(figure.getLineWidth());
+			undoLabel.setText(String.format("%s %d",canvasState.getNextUndo() == null ? "" : canvasState.getNextUndo().toString(), canvasState.getUndoableAvailable()));
+			redoLabel.setText(String.format("%d %s", canvasState.getRedoableAvailable(), canvasState.getNextRedo() == null ? "" : canvasState.getNextRedo().toString()));
 			figure.draw();
 		}
 	}
