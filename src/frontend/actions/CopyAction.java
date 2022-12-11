@@ -13,20 +13,23 @@ public class CopyAction implements Undoable {
         this.selectedFigure = selectedFigure;
     }
 
+    @Override
     public void press(){
         this.copiedFigure = selectedFigure.getDuplicate(center);
         this.copiedFigure.setFormat(selectedFigure.getLineColor(), selectedFigure.getFillColor(), selectedFigure.getLineWidth());
     }
 
+    @Override
     public void undo(){
         this.copiedFigure = null;
     }
 
+    @Override
     public String toString(){
         return String.format("Copiar %s", selectedFigure.getName());
     }
 
-    public Figure getCopiedFigure() {
+     public Figure getCopiedFigure() {
         return copiedFigure;
     }
 }

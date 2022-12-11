@@ -130,8 +130,9 @@ public class PaintPane extends BorderPane {
 		redoLabel.setText(String.format("%d %s", canvasState.getRedoableAvailable(), canvasState.getNextRedo() == null ? "" : canvasState.getNextRedo().toString()));
 		undoLabel.setStyle("-fx-font-size: 16");
 		redoLabel.setStyle("-fx-font-size: 16");
-		undoLabel.setPrefWidth(USE_COMPUTED_SIZE);
-		redoLabel.setPrefWidth(USE_COMPUTED_SIZE);
+		undoLabel.setMinWidth(250);
+		redoLabel.setPrefWidth(250);
+		undoLabel.setAlignment(Pos.CENTER_RIGHT);
 		Button[] doToolsArr = { undoButton, redoButton};
 		for(Button tool : doToolsArr) {
 			tool.setMinWidth(50);

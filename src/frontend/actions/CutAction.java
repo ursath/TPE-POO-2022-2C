@@ -17,6 +17,8 @@ public class CutAction extends CopyAction{
         delete.press();
 
     }
+
+    @Override
     public void undo(){
         super.undo();
         delete.undo();

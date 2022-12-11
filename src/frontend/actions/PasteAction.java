@@ -5,9 +5,8 @@ import backend.model.Figure;
 
 public class PasteAction extends CopyAction {
 
-    private CopyAction previousCopy;
-    private Figure copyFigure;
-    private final CanvasState canvasState;
+    private Figure copyFigure;                                            // copyFigura guarda la figura que va a ser duplicada
+    private final CanvasState canvasState;                                // -> permite hacer varios paste
 
     public PasteAction(Figure copyFigure, CanvasState canvasState){
         //this.copiedFigure= copiedFigure;
