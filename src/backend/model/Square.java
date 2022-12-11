@@ -3,7 +3,7 @@ package backend.model;
 public abstract class Square extends Rectangle{
     //necesito getter de size para el duplicate de Drawable
     private static final String NAME = "Cuadrado";
-    private double size;
+    private final double size;
 
     public Square(Point topLeft, double size) {
         super(topLeft, new Point(topLeft.getX() + size, topLeft.getY() + size));
@@ -14,7 +14,7 @@ public abstract class Square extends Rectangle{
 
     @Override
     public String toString() {
-        return String.format("Cuadrado [ %s , %s ]", getTopLeft(), getBottomRight());
+        return String.format("%s [ %s , %s ]", NAME, getTopLeft(), getBottomRight());
     }
 
     public double getSize(){

@@ -10,7 +10,7 @@ public abstract class Circle extends Ellipse {
 
     @Override
     public String toString() {
-        return String.format("Círculo [Centro: %s, Radio: %.2f]", getCenterPoint(), getRadius());
+        return String.format("%s [Centro: %s, Radio: %.2f]", NAME, getCenterPoint(), getRadius());
     }
 
     public double getRadius() {

@@ -2,7 +2,7 @@ package backend.model;
 
 public abstract class Rectangle extends Figure {
 
-    private static final String NAME = "Rectangulo";
+    private static final String NAME = "Rectángulo";
     private Point topLeft, bottomRight;
 
     public Rectangle(Point topLeft, Point bottomRight) {
@@ -31,7 +31,7 @@ public abstract class Rectangle extends Figure {
 
     @Override
     public String toString() {
-        return String.format("Rectángulo [ %s , %s ]", topLeft, bottomRight);
+        return String.format("%s [ %s , %s ]", NAME, topLeft, bottomRight);
     }
 
 }

@@ -25,7 +25,7 @@ public abstract class Ellipse extends Figure {
 
     @Override
     public String toString() {
-        return String.format("Elipse [Centro: %s, DMayor: %.2f, DMenor: %.2f]", centerPoint, sMayorAxis, sMinorAxis);
+        return String.format("%s [Centro: %s, DMayor: %.2f, DMenor: %.2f]", NAME, centerPoint, sMayorAxis, sMinorAxis);
     }
 
     public Point getCenterPoint() {
