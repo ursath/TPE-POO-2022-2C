@@ -130,6 +130,8 @@ public class PaintPane extends BorderPane {
 		redoLabel.setText(String.format("%d %s", canvasState.getRedoableAvailable(), canvasState.getNextRedo() == null ? "" : canvasState.getNextRedo().toString()));
 		undoLabel.setStyle("-fx-font-size: 16");
 		redoLabel.setStyle("-fx-font-size: 16");
+		undoLabel.setPrefWidth(USE_COMPUTED_SIZE);
+		redoLabel.setPrefWidth(USE_COMPUTED_SIZE);
 		Button[] doToolsArr = { undoButton, redoButton};
 		for(Button tool : doToolsArr) {
 			tool.setMinWidth(50);
@@ -219,6 +221,7 @@ public class PaintPane extends BorderPane {
 					Point eventPoint = new Point(event.getX(), event.getY());
 					CopyFormatAction copyFormatAction = new CopyFormatAction(selectedFigure, canvasState, eventPoint, newLineColor, newFillColor, newLineWidth);
 					copyFormatAction.press();
+					canvasState.addUndoableAction(copyFormatAction);
 					newFormat = false;
 				}
 			}
@@ -273,6 +276,7 @@ public class PaintPane extends BorderPane {
 				copyAction.press();
 				canvasState.addUndoableAction(copyAction);
 				copiedFigure = copyAction.getCopiedFigure();
+				redrawCanvas();
 			}
 		});
 
@@ -311,6 +315,7 @@ public class PaintPane extends BorderPane {
 				newFormat = true;
 				selectedFigure = null;
 			}
+			redrawCanvas();
 		});
 
 		lineColorPicker.setOnAction(event -> {
@@ -377,10 +382,10 @@ public class PaintPane extends BorderPane {
 			}
 			gc.setFill(figure.getFillColor());
 			gc.setLineWidth(figure.getLineWidth());
-			undoLabel.setText(String.format("%s %d",canvasState.getNextUndo() == null ? "" : canvasState.getNextUndo().toString(), canvasState.getUndoableAvailable()));
-			redoLabel.setText(String.format("%d %s", canvasState.getRedoableAvailable(), canvasState.getNextRedo() == null ? "" : canvasState.getNextRedo().toString()));
 			figure.draw();
 		}
+		undoLabel.setText(String.format("%s %d",canvasState.getNextUndo() == null ? "" : canvasState.getNextUndo().toString(), canvasState.getUndoableAvailable()));
+		redoLabel.setText(String.format("%d %s", canvasState.getRedoableAvailable(), canvasState.getNextRedo() == null ? "" : canvasState.getNextRedo().toString()));
 	}
 
 	private void setCursor(Control o) {
