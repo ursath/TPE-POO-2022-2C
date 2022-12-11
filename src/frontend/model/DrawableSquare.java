@@ -16,10 +16,12 @@ public class DrawableSquare extends Square {
 
     @Override
     public void draw(){
-        gc.fillRect(getTopLeft().getX(), getTopLeft().getY(),
-                Math.abs(getTopLeft().getX() - getBottomRight().getX()), Math.abs(getTopLeft().getY() - getBottomRight().getY()));
-        gc.strokeRect(getTopLeft().getX(), getTopLeft().getY(),
-                Math.abs(getTopLeft().getX() - getBottomRight().getX()), Math.abs(getTopLeft().getY() - getBottomRight().getY()));
+        Point topLeft = getTopLeft();
+        Point bottomRight = getBottomRight();
+        gc.fillRect(topLeft.getX(), topLeft.getY(),
+                Math.abs(topLeft.distanceToX(bottomRight)), Math.abs(topLeft.distanceToY(bottomRight)) );
+        gc.strokeRect(topLeft.getX(), topLeft.getY(),
+                Math.abs(topLeft.distanceToX(bottomRight)) , Math.abs(topLeft.distanceToY(bottomRight)));
     }
 
     @Override
