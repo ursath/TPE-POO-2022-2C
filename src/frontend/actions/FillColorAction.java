@@ -10,10 +10,16 @@ public class FillColorAction extends FormatAction {
         super(selectedFigure, fillColor, canvasState);
     }
 
-    // NOSE SI ESTO ESTA BIEN !!!!! CHEQUEAR
     public void undo(){
-        changeColor(selectedFigure.getFillColor());
+        changeColor(oldColor);
     }
+
+    @Override
+    public void press() {
+        oldColor = selectedFigure.getFillColor();
+        super.press();
+    }
+
 
     @Override
     public void changeColor(Color color) {

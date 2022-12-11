@@ -10,6 +10,7 @@ public abstract class FormatAction implements Undoable {
     protected Figure selectedFigure;
     protected Color color;
     protected CanvasState canvasState;
+    protected Color oldColor;
 
     FormatAction(Figure selectedFigure, Color color, CanvasState canvasState) {
         this.canvasState = canvasState;
