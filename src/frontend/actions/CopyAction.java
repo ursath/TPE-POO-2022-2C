@@ -2,8 +2,9 @@ package frontend.actions;
 
 import backend.model.Figure;
 import backend.model.Point;
+import frontend.interfaces.Undoable;
 
-public class CopyAction {
+public class CopyAction implements Undoable {
     private final Figure selectedFigure;
     private Figure copiedFigure;
     private final Point center = new Point(400, 300);
@@ -22,7 +23,7 @@ public class CopyAction {
     }
 
     public String toString(){
-        return String.format("Copiar %s", selectedFigure);
+        return String.format("Copiar %s", selectedFigure.getName());
     }
 
     public Figure getCopiedFigure() {

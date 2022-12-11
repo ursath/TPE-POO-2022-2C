@@ -1,7 +1,6 @@
 package frontend.interfaces;
 
-@FunctionalInterface
 public interface Undoable {
-
+    void press();
     void undo();
 }

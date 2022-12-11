@@ -144,20 +144,19 @@ public class PaintPane extends BorderPane {
 			if(endPoint.getX() < startPoint.getX() || endPoint.getY() < startPoint.getY()) {
 				return ;
 			}
+			CreateFigureAction createAction;
 			if(rectangleButton.isSelected()) {
-				CreateRectangleAction createRectangle = new CreateRectangleAction(startPoint, event, gc, canvasState, lineColor, fillColor, lineWidth);
-				createRectangle.press();
+				createAction = new CreateRectangleAction(startPoint, event, gc, canvasState, lineColor, fillColor, lineWidth);
 			} else if(circleButton.isSelected()) {
-				CreateCircleAction createCircle = new CreateCircleAction(startPoint, event, gc, canvasState, lineColor, fillColor, lineWidth);
-				createCircle.press();
+				createAction = new CreateCircleAction(startPoint, event, gc, canvasState, lineColor, fillColor, lineWidth);
 			} else if(squareButton.isSelected()) {
-				CreateSquareAction createSquare = new CreateSquareAction(startPoint, event, gc, canvasState, lineColor, fillColor, lineWidth);
-				createSquare.press();
+				createAction = new CreateSquareAction(startPoint, event, gc, canvasState, lineColor, fillColor, lineWidth);
 			} else if(ellipseButton.isSelected()) {
-				CreateEllipseAction createEllipse = new CreateEllipseAction(startPoint, event, gc, canvasState, lineColor, fillColor, lineWidth);
-				createEllipse.press();
+				createAction = new CreateEllipseAction(startPoint, event, gc, canvasState, lineColor, fillColor, lineWidth);
 			} else
 				return;
+			createAction.press();
+			canvasState.addUndoableAction(createAction);
 			startPoint = null;
 			redrawCanvas();
 		});
@@ -306,6 +305,16 @@ public class PaintPane extends BorderPane {
 				fillColorAction.press();
 				redrawCanvas();
 			}
+		});
+
+		undoButton.setOnAction(event -> {
+			canvasState.undoLastAction();
+			redrawCanvas();
+		});
+
+		redoButton.setOnAction(event->{
+			canvasState.redoLastAction();
+			redrawCanvas();
 		});
 
 		lineSlider.valueProperty().addListener(new ChangeListener<Number>() {

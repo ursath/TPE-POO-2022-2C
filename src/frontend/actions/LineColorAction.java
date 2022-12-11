@@ -6,8 +6,8 @@ import javafx.scene.paint.Color;
 
 public class LineColorAction extends FormatAction {
 
-    public LineColorAction(Figure selectedFigure, Color fillColor, CanvasState canvasState){
-        super(selectedFigure, fillColor, canvasState);
+    public LineColorAction(Figure selectedFigure, Color lineColor, CanvasState canvasState){
+        super(selectedFigure, lineColor, canvasState);
     }
 
     // NOSE SI ESTO ESTA BIEN !!!!! CHEQUEAR
@@ -26,7 +26,7 @@ public class LineColorAction extends FormatAction {
 
     @Override
     public String toString(){
-        return super.toString() + String.format("borde de %s", selectedFigure);
+        return super.toString() + String.format("borde de %s", selectedFigure.getName());
     }
 
 }

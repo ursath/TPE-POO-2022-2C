@@ -2,9 +2,11 @@ package frontend.actions;
 
 import backend.CanvasState;
 import backend.model.Figure;
+import frontend.interfaces.Undoable;
 import javafx.scene.paint.Color;
 
-public abstract class FormatAction {
+
+public abstract class FormatAction implements Undoable {
     protected Figure selectedFigure;
     protected Color color;
     protected CanvasState canvasState;

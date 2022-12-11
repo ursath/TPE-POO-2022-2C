@@ -3,12 +3,13 @@ package frontend.actions;
 import backend.CanvasState;
 import backend.model.Figure;
 import backend.model.Point;
+import frontend.interfaces.Undoable;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
 import javafx.scene.input.MouseEvent;
 
-public abstract class CreateFigureAction {
+public abstract class CreateFigureAction implements Undoable {
     protected Figure newFigure;
     private final CanvasState canvasState;
 

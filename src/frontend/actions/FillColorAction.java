@@ -26,7 +26,7 @@ public class FillColorAction extends FormatAction {
 
     @Override
     public String toString(){
-        return super.toString() + String.format("relleno de %s", selectedFigure);
+        return super.toString() + String.format("relleno de %s", selectedFigure.getName());
     }
 
 
