@@ -21,6 +21,8 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.control.Label;
 import javafx.scene.control.Button;
+
+import java.util.NoSuchElementException;
 import java.util.ResourceBundle;
 
 public class PaintPane extends BorderPane {
@@ -336,15 +338,29 @@ public class PaintPane extends BorderPane {
 		});
 
 		undoButton.setOnAction(event -> {
-			canvasState.undoLastAction();
-			selectedFigure = null;
-			redrawCanvas();
+			try {
+				if(canvasState.undoLastAction()) {
+					selectedFigure = null;
+					redrawCanvas();
+				}
+				else
+					throw new NoSuchElementException("No hay operaciones para deshacer");
+			} catch (NoSuchElementException e) {
+				throwWarning(e.getMessage());
+			}
 		});
 
 		redoButton.setOnAction(event->{
-			canvasState.redoLastAction();
-			selectedFigure = null;
-			redrawCanvas();
+			try {
+				if (canvasState.redoLastAction()) {
+					selectedFigure = null;
+					redrawCanvas();
+				}
+				else
+					throw new NoSuchElementException("No hay operaciones para rehacer");
+			} catch (NoSuchElementException e) {
+				throwWarning(e.getMessage());
+			}
 		});
 
 		lineSlider.valueProperty().addListener(new ChangeListener<Number>() {
@@ -395,4 +411,11 @@ public class PaintPane extends BorderPane {
 		return new ImageView(cutIcon);
 	}
 
+	public void throwWarning(String message) {
+		Alert alert = new Alert(Alert.AlertType.WARNING);
+		alert.setTitle("Advertencia");
+		alert.setHeaderText("Operacion Invalida");
+		alert.setContentText(message);
+		alert.showAndWait();
+	}
 }
