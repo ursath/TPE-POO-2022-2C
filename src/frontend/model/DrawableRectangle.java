@@ -17,19 +17,23 @@ public class DrawableRectangle extends Rectangle implements Drawable{
 
     @Override
     public void draw(){
-        gc.fillRect(getTopLeft().getX(), getTopLeft().getY(),
-                Math.abs(getTopLeft().getX() - getBottomRight().getX()), Math.abs(getTopLeft().getY() - getBottomRight().getY()));
-        gc.strokeRect(getTopLeft().getX(), getTopLeft().getY(),
-                Math.abs(getTopLeft().getX() - getBottomRight().getX()), Math.abs(getTopLeft().getY() - getBottomRight().getY()));
+        Point topLeft = getTopLeft();
+        Point bottomRight = getBottomRight();
+        gc.fillRect(topLeft.getX(), topLeft.getY(),
+                Math.abs(topLeft.distanceToX(bottomRight)), Math.abs(topLeft.distanceToY(bottomRight)) );
+        gc.strokeRect(topLeft.getX(), topLeft.getY(),
+                Math.abs(topLeft.distanceToX(bottomRight)), Math.abs(topLeft.distanceToY(bottomRight)) );
     }
 
     @Override
     public Figure getDuplicate(Point center) {
-        Point topLeft = getTopLeft();
-        Point bottomRight = getBottomRight();
-        DrawableRectangle toReturn = new DrawableRectangle(topLeft,bottomRight,gc);
-        toReturn.move(center.getX()-topLeft.getX(), center.getY()- bottomRight.getY());
-        return toReturn;
+        double baseMitad = getBottomRight().distanceToX(getTopLeft())/2;
+        double alturaMitad = getTopLeft().distanceToY(getBottomRight())/2;
+
+        Point topLeft = new Point(center.getX()-baseMitad,center.getY()-alturaMitad );
+        Point bottomRight = new Point(center.getX()+baseMitad,center.getY()+alturaMitad );
+
+        return new DrawableRectangle(topLeft,bottomRight,gc);
     }
 
 }

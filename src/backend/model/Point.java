@@ -17,11 +17,11 @@ public class Point {
         return y;
     }
 
-    public double getDistanceToX(Point other){
+    public double distanceToX(Point other){
         return other.getX() - x;
     }
 
-    public double getDistanceToY(Point other){
+    public double distanceToY(Point other){
         return other.getY() - y;
     }
 
