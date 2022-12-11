@@ -5,9 +5,6 @@ import backend.model.Figure;
 import backend.model.*;
 import com.sun.javafx.scene.web.skin.HTMLEditorSkin;
 import frontend.actions.*;
-import frontend.model.DrawableCircle;
-import frontend.model.DrawableEllipse;
-import frontend.model.DrawableSquare;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
@@ -24,13 +21,15 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.control.Label;
 import javafx.scene.control.Button;
-
 import java.util.ResourceBundle;
 
 public class PaintPane extends BorderPane {
 
 	private static final int MIN_SIZE_LABEL = 280;
 	private static final String GRAY_BACKGROUND_COLOR = "-fx-background-color: #999";
+	private static final int BOX_SPACING = 10;
+	private static final int PADDING = 5;
+	private static final String FONT_SIZE = "-fx-font-size: 16";
 
 	// BackEnd
 	private final CanvasState canvasState;
@@ -53,17 +52,17 @@ public class PaintPane extends BorderPane {
 	private final ToggleButton ellipseButton = new ToggleButton("Elipse");
 	private final ToggleButton deleteButton = new ToggleButton("Borrar");
 
-	ToggleButton copyForButton = new ToggleButton("Cop. Form.");
+	private final ToggleButton copyForButton = new ToggleButton("Cop. Form.");
 
 	//Botones Barra superior
 	// cpy menu
 	private final Button copyButton = new Button ("Copiar", getImage("copyIcon"));
 	private final Button cutButton = new Button ("Cortar", getImage("cutIcon"));
 	private final Button pasteButton = new Button ("Pegar", getImage("pasteIcon"));
-	//undo menu
+	// undo menu
 	private final Button undoButton = new Button ("Deshacer", getImage("undoIcon"));
 	private final Button redoButton = new Button("Rehacer", getImage("redoIcon"));
-
+	// format menu
 	private Label lineLbl = new Label("Borde");
 	private Slider lineSlider = new Slider(1, 50, 5);
 	private ColorPicker lineColorPicker = new ColorPicker(Color.BLACK);
@@ -84,6 +83,7 @@ public class PaintPane extends BorderPane {
 	// StatusBar
 	private final StatusPane statusPane;
 
+	// Label de undo y redo
 	private Label undoLabel, redoLabel;
 
 	public PaintPane(CanvasState canvasState, StatusPane statusPane) {
@@ -107,32 +107,34 @@ public class PaintPane extends BorderPane {
 		setCursor(fillColorPicker);
 
 		// Left Buttons
-		VBox buttonsBox = new VBox(10);
+		VBox buttonsBox = new VBox(BOX_SPACING);
 		buttonsBox.getChildren().addAll(toolsArr);
 		buttonsBox.getChildren().addAll(lineLbl, lineSlider, lineColorPicker, fillLbl, fillColorPicker);
-		buttonsBox.setPadding(new Insets(5));
+		buttonsBox.setPadding(new Insets(PADDING));
 		buttonsBox.setStyle(GRAY_BACKGROUND_COLOR);
 		buttonsBox.setPrefWidth(100);
 		gc.setLineWidth(1);
 
-		//Top Buttons (copy Menu)
-		HBox copyButtonsBox = new HBox(10);
+		// Top Buttons
+		// copy Menu
+		HBox copyButtonsBox = new HBox(BOX_SPACING);
 		Button[] copyToolsArr = { cutButton,copyButton,pasteButton};
 		for(Button tool : copyToolsArr) {
 			tool.setMinWidth(50);
 			tool.setCursor(Cursor.HAND);
 		}
 		copyButtonsBox.getChildren().addAll(copyToolsArr);
-		copyButtonsBox.setPadding(new Insets(5));
+		copyButtonsBox.setPadding(new Insets(PADDING));
 
-		HBox doButtonsBox = new HBox(10);
+		// Redo & undo Menu
+		HBox doButtonsBox = new HBox(BOX_SPACING);
 		doButtonsBox.setAlignment(Pos.CENTER);
 		undoLabel = new Label("");
 		redoLabel = new Label("");
 		undoLabel.setText(String.format("%s %d",canvasState.getNextUndo() == null ? "" : canvasState.getNextUndo().toString(), canvasState.getUndoableAvailable()));
 		redoLabel.setText(String.format("%d %s", canvasState.getRedoableAvailable(), canvasState.getNextRedo() == null ? "" : canvasState.getNextRedo().toString()));
-		undoLabel.setStyle("-fx-font-size: 16");
-		redoLabel.setStyle("-fx-font-size: 16");
+		undoLabel.setStyle(FONT_SIZE);
+		redoLabel.setStyle(FONT_SIZE);
 		undoLabel.setMinWidth(MIN_SIZE_LABEL);
 		redoLabel.setMinWidth(MIN_SIZE_LABEL);
 		undoLabel.setAlignment(Pos.CENTER_RIGHT);
@@ -145,14 +147,14 @@ public class PaintPane extends BorderPane {
 		doButtonsBox.getChildren().add(undoButton);
 		doButtonsBox.getChildren().add(redoButton);
 		doButtonsBox.getChildren().add(redoLabel);
-		doButtonsBox.setPadding(new Insets(5));
+		doButtonsBox.setPadding(new Insets(PADDING));
 
-		VBox topButtonsBox = new VBox(0);
+		VBox topButtonsBox = new VBox();
 		topButtonsBox.getChildren().addAll(copyButtonsBox, doButtonsBox);
 		topButtonsBox.setStyle(GRAY_BACKGROUND_COLOR);
 
 
-		//Manejo de acciones
+		// Manejo de eventos
 
 		canvas.setOnMousePressed(event -> {
 			startPoint = new Point(event.getX(), event.getY());
@@ -249,12 +251,12 @@ public class PaintPane extends BorderPane {
 				DeleteFigureAction deleteAction = new DeleteFigureAction(selectedFigure, canvasState);
 				deleteAction.press();
 				canvasState.addUndoableAction(deleteAction);
-				//canvasState.deleteFigure(selectedFigure);
 				selectedFigure = null;
 				redrawCanvas();
 			}
 		});
 
+		// Atajo combinación de teclas
 		this.setOnKeyPressed(event -> {
 			if ( event.isControlDown()  ) {
 				switch (event.getCode()) {
@@ -273,9 +275,6 @@ public class PaintPane extends BorderPane {
 
 		copyButton.setOnAction(event -> {
 			if ( selectedFigure != null ){
-				// copyFigure(selectedFigure,)
-				//copiedFigure = selectedFigure.getDuplicate(new Point(400,300));
-				//copiedFigure.setFormat(selectedFigure.getLineColor(),selectedFigure.getFillColor(),selectedFigure.getLineWidth());
 				CopyAction copyAction = new CopyAction(selectedFigure);
 				copyAction.press();
 				canvasState.addUndoableAction(copyAction);
@@ -286,8 +285,6 @@ public class PaintPane extends BorderPane {
 
 		cutButton.setOnAction(event -> {
 			if ( selectedFigure != null ) {
-				//copyButton.fire();
-				//deleteButton.fire();
 				CutAction cutAction = new CutAction(selectedFigure, canvasState);
 				cutAction.press();
 				canvasState.addUndoableAction(cutAction);
@@ -298,10 +295,6 @@ public class PaintPane extends BorderPane {
 
 		pasteButton.setOnAction(event -> {
 			if ( copiedFigure != null ){
-				//ver si se puede crear un método para q no se repita cod
-			//	Figure aux = copiedFigure.getDuplicate(new Point(400,300));
-			//	aux.setFormat(copiedFigure.getLineColor(),copiedFigure.getFillColor(),copiedFigure.getLineWidth());
-			//	canvasState.addFigure(aux);
 				PasteAction pasteAction = new PasteAction(copiedFigure,canvasState);
 				pasteAction.press();
 				canvasState.addUndoableAction(pasteAction);
@@ -316,7 +309,6 @@ public class PaintPane extends BorderPane {
 				newFillColor = selectedFigure.getFillColor();
 				newLineColor = selectedFigure.getLineColor();
 				newFormat = true;
-				//selectedFigure = null;
 			}
 			redrawCanvas();
 		});
@@ -370,11 +362,13 @@ public class PaintPane extends BorderPane {
 			}
 		});
 
+		// Colocamos las Box
 		setLeft(buttonsBox);
 		setRight(canvas);
 		setTop(topButtonsBox);
 	}
 
+	// Actualiza el estado del canvas
 	void redrawCanvas() {
 		gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
 		for(Figure figure : canvasState.figures()) {
