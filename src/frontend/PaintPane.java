@@ -31,7 +31,7 @@ public class PaintPane extends BorderPane {
 	private static final String GRAY_BACKGROUND_COLOR = "-fx-background-color: #999";
 	private static final int BOX_SPACING = 10;
 	private static final int PADDING = 5;
-	private static final String FONT_SIZE = "-fx-font-size: 16";
+	private static final String FONT_SIZE = "-fx-font-size: 14";
 
 	// BackEnd
 	private final CanvasState canvasState;
@@ -276,43 +276,65 @@ public class PaintPane extends BorderPane {
 		});
 
 		copyButton.setOnAction(event -> {
-			if ( selectedFigure != null ){
-				CopyAction copyAction = new CopyAction(selectedFigure);
-				copyAction.press();
-				canvasState.addUndoableAction(copyAction);
-				copiedFigure = copyAction.getCopiedFigure();
-				redrawCanvas();
+			try {
+				if (selectedFigure != null) {
+					CopyAction copyAction = new CopyAction(selectedFigure);
+					copyAction.press();
+					canvasState.addUndoableAction(copyAction);
+					copiedFigure = copyAction.getCopiedFigure();
+					redrawCanvas();
+				} else
+					throw new NoSuchElementException("Debe seleccionar una figura para copiar");
+			} catch (NoSuchElementException e) {
+				throwWarning(e.getMessage());
 			}
 		});
 
 		cutButton.setOnAction(event -> {
-			if ( selectedFigure != null ) {
-				CutAction cutAction = new CutAction(selectedFigure, canvasState);
-				cutAction.press();
-				canvasState.addUndoableAction(cutAction);
-				copiedFigure = cutAction.getCopiedFigure();
-				redrawCanvas();
+			try {
+				if (selectedFigure != null) {
+					CutAction cutAction = new CutAction(selectedFigure, canvasState);
+					cutAction.press();
+					canvasState.addUndoableAction(cutAction);
+					copiedFigure = cutAction.getCopiedFigure();
+					redrawCanvas();
+				}
+				else
+					throw new NoSuchElementException("Debe seleccionar una figura para cortar");
+			} catch (NoSuchElementException e) {
+				throwWarning(e.getMessage());
 			}
 		});
 
 		pasteButton.setOnAction(event -> {
-			if ( copiedFigure != null ){
-				PasteAction pasteAction = new PasteAction(copiedFigure,canvasState);
-				pasteAction.press();
-				canvasState.addUndoableAction(pasteAction);
-				selectedFigure = null;
-				redrawCanvas();
+			try {
+				if (copiedFigure != null) {
+					PasteAction pasteAction = new PasteAction(copiedFigure, canvasState);
+					pasteAction.press();
+					canvasState.addUndoableAction(pasteAction);
+					selectedFigure = null;
+					redrawCanvas();
+				}
+				throw new NoSuchElementException("Debe copiar una figura antes de pegar");
+			} catch (NoSuchElementException e) {
+				throwWarning(e.getMessage());
 			}
 		});
 
 		copyForButton.setOnAction(event -> {
-			if (selectedFigure != null) {
-				newLineWidth = selectedFigure.getLineWidth();
-				newFillColor = selectedFigure.getFillColor();
-				newLineColor = selectedFigure.getLineColor();
-				newFormat = true;
+			try {
+				if (selectedFigure != null) {
+					newLineWidth = selectedFigure.getLineWidth();
+					newFillColor = selectedFigure.getFillColor();
+					newLineColor = selectedFigure.getLineColor();
+					newFormat = true;
+					redrawCanvas();
+				}
+				else
+					throw new NoSuchElementException("Debe seleccionar una figura para copiar formato");
+			} catch (NoSuchElementException e) {
+				throwWarning(e.getMessage());
 			}
-			redrawCanvas();
 		});
 
 		lineColorPicker.setOnAction(event -> {
