@@ -6,6 +6,7 @@ import javafx.scene.paint.Color;
 
 public abstract class Figure implements Movable, Drawable {
 
+    protected String name;
     private Color fillColor;
     private Color lineColor;
     private double lineWidth;
@@ -42,5 +43,9 @@ public abstract class Figure implements Movable, Drawable {
        setLineWidth(width);
        setFillColor(fillColor);
        setLineColor(lineColor);
+    }
+
+    public String getName() {
+        return name;
     }
 }

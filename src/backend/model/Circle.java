@@ -2,8 +2,10 @@ package backend.model;
 
 public abstract class Circle extends Ellipse {
 
+    private static final String NAME = "Circulo";
     public Circle(Point centerPoint, double radius) {
         super(centerPoint, radius * 2, radius * 2);
+        this.name = NAME;
     }
 
     @Override

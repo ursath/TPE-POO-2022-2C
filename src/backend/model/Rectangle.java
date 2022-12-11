@@ -2,11 +2,13 @@ package backend.model;
 
 public abstract class Rectangle extends Figure {
 
+    private static final String NAME = "Rectangulo";
     private Point topLeft, bottomRight;
 
     public Rectangle(Point topLeft, Point bottomRight) {
         this.topLeft = topLeft;
         this.bottomRight = bottomRight;
+        this.name = NAME;
     }
 
     public Point getTopLeft() {

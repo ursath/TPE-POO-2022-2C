@@ -2,6 +2,7 @@ package backend.model;
 
 public abstract class Ellipse extends Figure {
 
+    private static final String NAME = "Elipse";
     private Point centerPoint;
     private final double sMayorAxis, sMinorAxis;
 
@@ -9,6 +10,7 @@ public abstract class Ellipse extends Figure {
         this.centerPoint = centerPoint;
         this.sMayorAxis = sMayorAxis;
         this.sMinorAxis = sMinorAxis;
+        this.name = NAME;
     }
 
     public void move(double diffX, double diffY){
