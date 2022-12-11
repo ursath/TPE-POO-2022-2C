@@ -10,9 +10,14 @@ public class LineColorAction extends FormatAction {
         super(selectedFigure, lineColor, canvasState);
     }
 
-    // NOSE SI ESTO ESTA BIEN !!!!! CHEQUEAR
     public void undo(){
-        changeColor(selectedFigure.getLineColor());
+        changeColor(oldColor);
+    }
+
+    @Override
+    public void press() {
+        oldColor = selectedFigure.getLineColor();
+        super.press();
     }
 
     @Override
