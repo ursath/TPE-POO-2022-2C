@@ -17,11 +17,20 @@ public class Point {
         return y;
     }
 
+    public double getDistanceToX(Point other){
+        return other.getX() - x;
+    }
+
+    public double getDistanceToY(Point other){
+        return other.getY() - y;
+    }
+
     @Override
     public String toString() {
         return String.format("{%.2f , %.2f}", x, y);
     }
 
+    //Agregamos el casteo en el equals por la versión de java desde la que lo corrimos
     @Override
     public boolean equals(Object o){
         if ( o==this)
