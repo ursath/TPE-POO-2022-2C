@@ -5,7 +5,7 @@ import backend.model.Point;
 import frontend.interfaces.Undoable;
 
 public class CopyAction implements Undoable {
-    private final Figure selectedFigure;
+    protected final Figure selectedFigure;
     private Figure copiedFigure;
     private final Point center = new Point(400, 300);
 
