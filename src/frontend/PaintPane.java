@@ -203,9 +203,7 @@ public class PaintPane extends BorderPane {
 					Point eventPoint = new Point(event.getX(), event.getY());
 					for (Figure figure : canvasState.figures()) {
 						if (figure.belongs(eventPoint)) {
-							figure.setLineColor(newLineColor);
-							figure.setLineWidth(newLineWidth);
-							figure.setFillColor(newFillColor);
+							figure.setFormat(lineColor, newFillColor, newLineWidth);
 						}
 					}
 					newFormat = false;
