@@ -10,6 +10,7 @@ public class FillColorAction extends FormatAction {
         super(selectedFigure, fillColor, canvasState);
     }
 
+    @Override
     public void undo(){
         changeColor(oldColor);
     }
@@ -19,7 +20,6 @@ public class FillColorAction extends FormatAction {
         oldColor = accionableFigure.getFillColor();
         super.press();
     }
-
 
     @Override
     public void changeColor(Color color) {

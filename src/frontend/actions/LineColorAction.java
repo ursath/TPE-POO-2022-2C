@@ -10,6 +10,7 @@ public class LineColorAction extends FormatAction {
         super(selectedFigure, lineColor, canvasState);
     }
 
+    @Override
     public void undo(){
         changeColor(oldColor);
     }

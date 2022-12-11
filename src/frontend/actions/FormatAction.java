@@ -16,8 +16,10 @@ public abstract class FormatAction extends Action {
         setAccionableFigure(selectedFigure);
     }
 
+
     public abstract void undo();
 
+    @Override
     public void press() {
         changeColor(color);
     }
