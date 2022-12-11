@@ -30,6 +30,7 @@ import java.util.ResourceBundle;
 public class PaintPane extends BorderPane {
 
 	private static final int MIN_SIZE_LABEL = 280;
+	private static final String GRAY_BACKGROUND_COLOR = "-fx-background-color: #999";
 
 	// BackEnd
 	private final CanvasState canvasState;
@@ -110,7 +111,7 @@ public class PaintPane extends BorderPane {
 		buttonsBox.getChildren().addAll(toolsArr);
 		buttonsBox.getChildren().addAll(lineLbl, lineSlider, lineColorPicker, fillLbl, fillColorPicker);
 		buttonsBox.setPadding(new Insets(5));
-		buttonsBox.setStyle("-fx-background-color: #999");
+		buttonsBox.setStyle(GRAY_BACKGROUND_COLOR);
 		buttonsBox.setPrefWidth(100);
 		gc.setLineWidth(1);
 
@@ -148,7 +149,7 @@ public class PaintPane extends BorderPane {
 
 		VBox topButtonsBox = new VBox(0);
 		topButtonsBox.getChildren().addAll(copyButtonsBox, doButtonsBox);
-		topButtonsBox.setStyle("-fx-background-color: #999");
+		topButtonsBox.setStyle(GRAY_BACKGROUND_COLOR);
 
 
 		//Manejo de acciones
@@ -308,7 +309,6 @@ public class PaintPane extends BorderPane {
 				redrawCanvas();
 			}
 		});
-
 
 		copyForButton.setOnAction(event -> {
 			if (selectedFigure != null) {

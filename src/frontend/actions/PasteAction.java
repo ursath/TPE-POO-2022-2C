@@ -28,4 +28,8 @@ public class PasteAction extends CopyAction {
         delete.press();
         //dudoso
     }
+    @Override
+    public String toString(){
+        return String.format("Pegar %s", getCopiedFigure().getName());
+    }
 }
