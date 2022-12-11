@@ -2,31 +2,29 @@ package frontend.actions;
 
 import backend.model.Figure;
 import backend.model.Point;
-import frontend.interfaces.Undoable;
 
-public class CopyAction implements Undoable {
-    protected final Figure selectedFigure;
+public class CopyAction extends Action {
     private Figure copiedFigure;
     private final Point center = new Point(400, 300);
 
-    public CopyAction(Figure selectedFigure){
-        this.selectedFigure = selectedFigure;
+    public CopyAction(Figure selectedFigure) {
+        setAccionableFigure(selectedFigure);
     }
 
     @Override
-    public void press(){
-        this.copiedFigure = selectedFigure.getDuplicate(center);
-        this.copiedFigure.setFormat(selectedFigure.getLineColor(), selectedFigure.getFillColor(), selectedFigure.getLineWidth());
+    public void press() {
+        this.copiedFigure = accionableFigure.getDuplicate(center);
+        this.copiedFigure.setFormat(accionableFigure.getLineColor(), accionableFigure.getFillColor(), accionableFigure.getLineWidth());
     }
 
     @Override
-    public void undo(){
+    public void undo() {
         this.copiedFigure = null;
     }
 
     @Override
-    public String toString(){
-        return String.format("Copiar %s", selectedFigure.getName());
+    public String toString() {
+        return String.format("Copiar %s", accionableFigure.getName());
     }
 
      public Figure getCopiedFigure() {

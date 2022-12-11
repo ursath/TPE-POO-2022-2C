@@ -3,17 +3,16 @@ package frontend.actions;
 import backend.CanvasState;
 import backend.model.Figure;
 
-public class CutAction extends CopyAction{
-    private final CanvasState canvasState;
-    private DeleteFigureAction delete;
+public class CutAction extends CopyAction {
+    private final DeleteFigureAction delete;
     public CutAction(Figure selectedFigure, CanvasState canvasState){
         super(selectedFigure);
-        this.canvasState = canvasState;
+        setCanvasState(canvasState);
+        delete = new DeleteFigureAction(selectedFigure,canvasState);
     }
     @Override
     public void press(){
         super.press();
-        delete = new DeleteFigureAction(selectedFigure,canvasState);
         delete.press();
 
     }
@@ -26,6 +25,6 @@ public class CutAction extends CopyAction{
 
     @Override
     public String toString(){
-        return String.format("Cortar %s", selectedFigure.getName());
+        return String.format("Cortar %s", accionableFigure.getName());
     }
 }

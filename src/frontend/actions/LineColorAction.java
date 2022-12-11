@@ -16,14 +16,14 @@ public class LineColorAction extends FormatAction {
 
     @Override
     public void press() {
-        oldColor = selectedFigure.getLineColor();
+        oldColor = accionableFigure.getLineColor();
         super.press();
     }
 
     @Override
     public void changeColor(Color color) {
         for(Figure figure : canvasState.figures()) {
-            if (figure == selectedFigure) {
+            if (figure == accionableFigure) {
                 figure.setLineColor(color);
             }
         }
@@ -31,7 +31,7 @@ public class LineColorAction extends FormatAction {
 
     @Override
     public String toString(){
-        return super.toString() + String.format("borde de %s", selectedFigure.getName());
+        return super.toString() + String.format("borde de %s", accionableFigure.getName());
     }
 
 }

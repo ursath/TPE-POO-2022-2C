@@ -2,30 +2,24 @@ package frontend.actions;
 
 import backend.CanvasState;
 import backend.model.Figure;
-import backend.model.Point;
-import frontend.interfaces.Undoable;
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.input.MouseEvent;
 
-public class DeleteFigureAction implements Undoable {
-
-    private final Figure originalFigure;
-    private final CanvasState canvasState;
+public class DeleteFigureAction extends Action {
 
     public DeleteFigureAction(Figure originalFigure, CanvasState canvasState){
-       this.originalFigure= originalFigure;
-       this.canvasState = canvasState;
+       setAccionableFigure(originalFigure);
+       setCanvasState(canvasState);
     }
 
     public void press(){
-        canvasState.deleteFigure(originalFigure);
+        canvasState.deleteFigure(accionableFigure);
     }
 
     public void undo(){
-        canvasState.addFigure(originalFigure);
+        canvasState.addFigure(accionableFigure);
     }
 
+    @Override
     public String toString(){
-        return String.format("Borrar %s", originalFigure.getName());
+        return String.format("Borrar %s", accionableFigure.getName());
     }
 }

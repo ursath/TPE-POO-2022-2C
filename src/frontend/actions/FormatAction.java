@@ -2,20 +2,18 @@ package frontend.actions;
 
 import backend.CanvasState;
 import backend.model.Figure;
-import frontend.interfaces.Undoable;
 import javafx.scene.paint.Color;
 
 
-public abstract class FormatAction implements Undoable {
-    protected Figure selectedFigure;
+public abstract class FormatAction extends Action {
+
     protected Color color;
-    protected CanvasState canvasState;
     protected Color oldColor;
 
     FormatAction(Figure selectedFigure, Color color, CanvasState canvasState) {
-        this.canvasState = canvasState;
+        setCanvasState(canvasState);
         this.color = color;
-        this.selectedFigure = selectedFigure;
+        setAccionableFigure(selectedFigure);
     }
 
     public abstract void undo();
@@ -26,6 +24,7 @@ public abstract class FormatAction implements Undoable {
 
     public abstract void changeColor(Color color);
 
+    @Override
     public String toString(){
         return "Cambiar color de ";
     }

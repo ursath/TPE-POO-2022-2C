@@ -3,32 +3,29 @@ package frontend.actions;
 import backend.CanvasState;
 import backend.model.Figure;
 import backend.model.Point;
-import frontend.interfaces.Undoable;
 import javafx.scene.paint.Color;
 
-public class CopyFormatAction implements Undoable {
+public class CopyFormatAction extends Action {
 
-    private Color newLineColor;
-    private Color newFillColor;
-    private double newLineWidth;
-    private Figure selectedFigure;
-    private CanvasState canvasState;
-    private Point eventPoint;
+    private final Color newLineColor;
+    private final Color newFillColor;
+    private final double newLineWidth;
+    private final Point eventPoint;
     private Color oldLineColor;
     private Color oldFillColor;
     private double oldLineWidth;
     private Figure auxFigure;
 
     public CopyFormatAction(Figure selectedFigure, CanvasState canvasState, Point eventPoint, Color newLineColor, Color newFillColor, double newLineWidth) {
-        this.canvasState = canvasState;
+        setCanvasState(canvasState);
+        setAccionableFigure(selectedFigure);
         this.newLineColor = newLineColor;
         this.newFillColor = newFillColor;
         this.newLineWidth = newLineWidth;
-        this.selectedFigure = selectedFigure;
         this.eventPoint = eventPoint;
     }
 
-    public void press(){
+    public void press() {
         for (Figure figure : canvasState.figures()) {
             if (figure.belongs(eventPoint)) {
                 auxFigure = figure;
@@ -48,7 +45,8 @@ public class CopyFormatAction implements Undoable {
         }
     }
 
+    @Override
     public String toString() {
-        return String.format("Copiar Formato de %s", selectedFigure.getName());
+        return String.format("Copiar Formato de %s", accionableFigure.getName());
     }
 }

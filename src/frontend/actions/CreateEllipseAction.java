@@ -1,7 +1,6 @@
 package frontend.actions;
 
 import backend.CanvasState;
-import backend.model.Figure;
 import backend.model.Point;
 import frontend.model.DrawableEllipse;
 import javafx.scene.canvas.GraphicsContext;
@@ -14,10 +13,11 @@ public class CreateEllipseAction extends CreateFigureAction{
         Point centerPoint = new Point(Math.abs(event.getX() + startPoint.getX()) / 2, (Math.abs((event.getY() + startPoint.getY())) / 2));
         double sMayorAxis = Math.abs(event.getX() - startPoint.getX());
         double sMinorAxis = Math.abs(event.getY() - startPoint.getY());
-        newFigure = new DrawableEllipse(centerPoint, sMayorAxis, sMinorAxis, gc);
-        newFigure.setFormat(lineColor, fillColor, width);
+        setAccionableFigure(new DrawableEllipse(centerPoint, sMayorAxis, sMinorAxis, gc));
+        accionableFigure.setFormat(lineColor, fillColor, width);
     }
 
+    @Override
     public String toString(){
         return super.toString() + "Ellipse";
     }

@@ -16,7 +16,7 @@ public class FillColorAction extends FormatAction {
 
     @Override
     public void press() {
-        oldColor = selectedFigure.getFillColor();
+        oldColor = accionableFigure.getFillColor();
         super.press();
     }
 
@@ -24,7 +24,7 @@ public class FillColorAction extends FormatAction {
     @Override
     public void changeColor(Color color) {
         for(Figure figure : canvasState.figures()) {
-            if (figure == selectedFigure) {
+            if (figure == accionableFigure) {
                 figure.setFillColor(color);
             }
         }
@@ -32,7 +32,7 @@ public class FillColorAction extends FormatAction {
 
     @Override
     public String toString(){
-        return super.toString() + String.format("relleno de %s", selectedFigure.getName());
+        return super.toString() + String.format("relleno de %s", accionableFigure.getName());
     }
 
 
