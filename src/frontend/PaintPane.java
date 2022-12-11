@@ -29,6 +29,8 @@ import java.util.ResourceBundle;
 
 public class PaintPane extends BorderPane {
 
+	private static final int MIN_SIZE_LABEL = 280;
+
 	// BackEnd
 	private final CanvasState canvasState;
 
@@ -130,8 +132,8 @@ public class PaintPane extends BorderPane {
 		redoLabel.setText(String.format("%d %s", canvasState.getRedoableAvailable(), canvasState.getNextRedo() == null ? "" : canvasState.getNextRedo().toString()));
 		undoLabel.setStyle("-fx-font-size: 16");
 		redoLabel.setStyle("-fx-font-size: 16");
-		undoLabel.setMinWidth(250);
-		redoLabel.setPrefWidth(250);
+		undoLabel.setMinWidth(MIN_SIZE_LABEL);
+		redoLabel.setMinWidth(MIN_SIZE_LABEL);
 		undoLabel.setAlignment(Pos.CENTER_RIGHT);
 		Button[] doToolsArr = { undoButton, redoButton};
 		for(Button tool : doToolsArr) {
@@ -314,7 +316,7 @@ public class PaintPane extends BorderPane {
 				newFillColor = selectedFigure.getFillColor();
 				newLineColor = selectedFigure.getLineColor();
 				newFormat = true;
-				selectedFigure = null;
+				//selectedFigure = null;
 			}
 			redrawCanvas();
 		});
