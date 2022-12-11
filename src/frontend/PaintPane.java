@@ -51,12 +51,15 @@ public class PaintPane extends BorderPane {
 
 	ToggleButton copyForButton = new ToggleButton("Cop. Form.");
 
-	//Botones Barra superior (cpy Menu)
+	//Botones Barra superior
+	// cpy menu
 	private final Button copyButton = new Button ("Copiar", getImage("copyIcon"));
 	private final Button cutButton = new Button ("Cortar", getImage("cutIcon"));
 	private final Button pasteButton = new Button ("Pegar", getImage("pasteIcon"));
+	//undo menu
 	private final Button undoButton = new Button ("Deshacer", getImage("undoIcon"));
 	private final Button redoButton = new Button("Rehacer", getImage("redoIcon"));
+
 	private Label lineLbl = new Label("Borde");
 	private Slider lineSlider = new Slider(1, 50, 5);
 	private ColorPicker lineColorPicker = new ColorPicker(Color.YELLOW);
@@ -247,7 +250,6 @@ public class PaintPane extends BorderPane {
 			}
 		});
 
-
 		copyButton.setOnAction(event -> {
 			if ( selectedFigure != null ){
 				// copyFigure(selectedFigure,)
@@ -273,13 +275,16 @@ public class PaintPane extends BorderPane {
 		pasteButton.setOnAction(event -> {
 			if ( copiedFigure != null ){
 				//ver si se puede crear un método para q no se repita cod
-				Figure aux = copiedFigure.getDuplicate(new Point(400,300));
-				aux.setFormat(copiedFigure.getLineColor(),copiedFigure.getFillColor(),copiedFigure.getLineWidth());
-				canvasState.addFigure(aux);
+			//	Figure aux = copiedFigure.getDuplicate(new Point(400,300));
+			//	aux.setFormat(copiedFigure.getLineColor(),copiedFigure.getFillColor(),copiedFigure.getLineWidth());
+			//	canvasState.addFigure(aux);
+				PasteAction pasteAction = new PasteAction(copiedFigure,canvasState);
+				pasteAction.press();
 				selectedFigure = null;
 				redrawCanvas();
 			}
 		});
+
 
 		copyForButton.setOnAction(event -> {
 			if (selectedFigure != null) {
