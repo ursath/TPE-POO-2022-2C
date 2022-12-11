@@ -24,6 +24,6 @@ public class CutAction extends CopyAction{
 
     @Override
     public String toString(){
-        return String.format("Cortar %s", selectedFigure);
+        return String.format("Cortar %s", selectedFigure.getName());
     }
 }

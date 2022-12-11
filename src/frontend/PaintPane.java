@@ -200,11 +200,8 @@ public class PaintPane extends BorderPane {
 			else if (copyForButton.isSelected()) {
 				if (newFormat) {
 					Point eventPoint = new Point(event.getX(), event.getY());
-					for (Figure figure : canvasState.figures()) {
-						if (figure.belongs(eventPoint)) {
-							figure.setFormat(lineColor, newFillColor, newLineWidth);
-						}
-					}
+					CopyFormatAction copyFormatAction = new CopyFormatAction(selectedFigure, canvasState, eventPoint, newLineColor, newFillColor, newLineWidth);
+					copyFormatAction.press();
 					newFormat = false;
 				}
 			}
@@ -225,7 +222,10 @@ public class PaintPane extends BorderPane {
 
 		deleteButton.setOnAction(event -> {
 			if (selectedFigure != null) {
-				canvasState.deleteFigure(selectedFigure);
+				DeleteFigureAction deleteAction = new DeleteFigureAction(selectedFigure, canvasState);
+				deleteAction.press();
+				canvasState.addUndoableAction(deleteAction);
+				//canvasState.deleteFigure(selectedFigure);
 				selectedFigure = null;
 				redrawCanvas();
 			}
@@ -258,13 +258,15 @@ public class PaintPane extends BorderPane {
 				copiedFigure = copyAction.getCopiedFigure();
 			}
 		});
+
 		cutButton.setOnAction(event -> {
 			if ( selectedFigure != null ) {
 				//copyButton.fire();
 				//deleteButton.fire();
-				CutAction cutAction = new CutAction(selectedFigure);
+				CutAction cutAction = new CutAction(selectedFigure, canvasState);
 				cutAction.press();
 				copiedFigure = cutAction.getCopiedFigure();
+				redrawCanvas();
 			}
 		});
 
@@ -294,6 +296,8 @@ public class PaintPane extends BorderPane {
 			if (selectedFigure != null) {
 				LineColorAction lineColorAction = new LineColorAction(selectedFigure, lineColor, canvasState);
 				lineColorAction.press();
+				canvasState.addUndoableAction(lineColorAction);
+				selectedFigure = null;
 				redrawCanvas();
 			}
 		});
@@ -303,17 +307,21 @@ public class PaintPane extends BorderPane {
 			if (selectedFigure != null) {
 				FillColorAction fillColorAction = new FillColorAction(selectedFigure, fillColor, canvasState);
 				fillColorAction.press();
+				canvasState.addUndoableAction(fillColorAction);
+				selectedFigure = null;
 				redrawCanvas();
 			}
 		});
 
 		undoButton.setOnAction(event -> {
 			canvasState.undoLastAction();
+			selectedFigure = null;
 			redrawCanvas();
 		});
 
 		redoButton.setOnAction(event->{
 			canvasState.redoLastAction();
+			selectedFigure = null;
 			redrawCanvas();
 		});
 
