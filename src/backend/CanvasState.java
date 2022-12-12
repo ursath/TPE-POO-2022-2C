@@ -23,7 +23,7 @@ public class CanvasState {
     }
 
     public Iterable<Figure> figures() {
-        return new ArrayList<>(list);
+        return list;
     }
 
     public void addUndoableAction(Undoable action){
