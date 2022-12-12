@@ -1,9 +1,11 @@
-package frontend.actions;
+package backend.actions;
 
 import backend.CanvasState;
 import backend.model.Figure;
 import backend.model.Point;
 import javafx.scene.paint.Color;
+
+import java.util.LinkedList;
 
 public class CopyFormatAction extends Action {
 

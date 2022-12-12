@@ -1,8 +1,8 @@
-package frontend.actions;
+package backend.actions;
 
 import backend.CanvasState;
 import backend.model.Figure;
-import frontend.interfaces.Undoable;
+import backend.interfaces.Undoable;
 
 public abstract class Action implements Undoable {
 

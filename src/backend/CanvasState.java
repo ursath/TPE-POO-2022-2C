@@ -1,7 +1,7 @@
 package backend;
 
 import backend.model.Figure;
-import frontend.interfaces.Undoable;
+import backend.interfaces.Undoable;
 
 import java.util.ArrayList;
 import java.util.List;

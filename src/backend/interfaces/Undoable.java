@@ -1,4 +1,4 @@
-package frontend.interfaces;
+package backend.interfaces;
 
 public interface Undoable {
     // Ejecuta la acción

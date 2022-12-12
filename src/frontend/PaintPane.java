@@ -4,7 +4,7 @@ import backend.CanvasState;
 import backend.model.Figure;
 import backend.model.*;
 import com.sun.javafx.scene.web.skin.HTMLEditorSkin;
-import frontend.actions.*;
+import backend.actions.*;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
@@ -315,7 +315,8 @@ public class PaintPane extends BorderPane {
 					selectedFigure = null;
 					redrawCanvas();
 				}
-				throw new NoSuchElementException("Debe copiar una figura antes de pegar");
+				else
+					throw new NoSuchElementException("Debe copiar una figura antes de pegar");
 			} catch (NoSuchElementException e) {
 				throwWarning(e.getMessage());
 			}
