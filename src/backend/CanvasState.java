@@ -3,16 +3,14 @@ package backend;
 import backend.model.Figure;
 import backend.interfaces.Undoable;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Stack;
+import java.util.*;
 
 public class CanvasState {
 
-    private final List<Figure> list = new ArrayList<>();
+    private final Deque<Figure> list = new ArrayDeque<>();
 
-    private Stack<Undoable> toRedo= new Stack<>();
-    private Stack<Undoable> toUndo = new Stack<>();
+    private final Deque<Undoable> toRedo= new ArrayDeque<>();
+    private final Deque<Undoable> toUndo = new ArrayDeque<>();
 
     public void addFigure(Figure figure) {
         list.add(figure);
@@ -24,6 +22,9 @@ public class CanvasState {
 
     public Iterable<Figure> figures() {
         return list;
+    }
+    public Iterator<Figure> figuresReversed(){
+        return list.descendingIterator();
     }
 
     public void addUndoableAction(Undoable action){

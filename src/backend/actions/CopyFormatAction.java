@@ -4,8 +4,7 @@ import backend.CanvasState;
 import backend.model.Figure;
 import backend.model.Point;
 import javafx.scene.paint.Color;
-
-import java.util.LinkedList;
+import java.util.Iterator;
 
 public class CopyFormatAction extends Action {
 
@@ -28,13 +27,16 @@ public class CopyFormatAction extends Action {
     }
 
     public void press() {
-        for (Figure figure : canvasState.figures()) {
+        Iterator<Figure> it = canvasState.figuresReversed();
+        while ( it.hasNext() ) {
+            Figure figure = it.next();
             if (figure.belongs(eventPoint)) {
                 auxFigure = figure;
                 oldFillColor = figure.getFillColor();
                 oldLineColor = figure.getLineColor();
                 oldLineWidth = figure.getLineWidth();
                 figure.setFormat(newLineColor, newFillColor, newLineWidth);
+                return;
             }
         }
     }

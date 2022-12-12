@@ -22,6 +22,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.control.Label;
 import javafx.scene.control.Button;
 
+import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.ResourceBundle;
 
@@ -65,11 +66,11 @@ public class PaintPane extends BorderPane {
 	private final Button undoButton = new Button ("Deshacer", getImage("undoIcon"));
 	private final Button redoButton = new Button("Rehacer", getImage("redoIcon"));
 	// format menu
-	private Label lineLbl = new Label("Borde");
-	private Slider lineSlider = new Slider(1, 50, 5);
+	private final Label lineLbl = new Label("Borde");
+	private final Slider lineSlider = new Slider(1, 50, 5);
 	private ColorPicker lineColorPicker = new ColorPicker(Color.BLACK);
 
-	private Label fillLbl = new Label("Relleno");
+	private final Label fillLbl = new Label("Relleno");
 	private ColorPicker fillColorPicker = new ColorPicker(Color.YELLOW);
 
 	// Dibujar una figura
@@ -191,7 +192,9 @@ public class PaintPane extends BorderPane {
 			Point eventPoint = new Point(event.getX(), event.getY());
 			boolean found = false;
 			StringBuilder label = new StringBuilder();
-			for(Figure figure : canvasState.figures()) {
+			Iterator<Figure> it = canvasState.figuresReversed();
+			while ( it.hasNext() && !found ) {
+				Figure figure = it.next();
 				if(figure.belongs(eventPoint)) {
 					found = true;
 					label.append(figure.toString());
@@ -209,7 +212,9 @@ public class PaintPane extends BorderPane {
 				Point eventPoint = new Point(event.getX(), event.getY());
 				boolean found = false;
 				StringBuilder label = new StringBuilder("Se seleccionó: ");
-				for (Figure figure : canvasState.figures()) {
+				Iterator<Figure> it = canvasState.figuresReversed();
+				while ( it.hasNext() && !found) {
+					Figure figure = it.next();
 					if(figure.belongs(eventPoint)) {
 						found = true;
 						selectedFigure = figure;
@@ -391,7 +396,9 @@ public class PaintPane extends BorderPane {
 			public void changed(ObservableValue<? extends Number> observableValue, Number oldV, Number newV) {
 				lineWidth = newV.doubleValue();
 				if (selectedFigure != null) {
-					for(Figure figure : canvasState.figures()) {
+					Iterator<Figure> it = canvasState.figuresReversed();
+					while ( it.hasNext() ) {
+						Figure figure = it.next();
 						if (figure == selectedFigure) {
 							figure.setLineWidth(lineWidth);
 						}
